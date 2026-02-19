@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Bun
+bun.lockb
+
+# Build output
+dist/
+
+# Environment variables
+.env
+.env*.local
+
+# Vite cache
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# VS Code settings
+.vscode/
+
+# Private files for personal use
+/private/

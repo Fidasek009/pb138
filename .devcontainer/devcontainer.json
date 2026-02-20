@@ -28,17 +28,17 @@
 				"docker.docker",
 				"oven.bun-vscode",
                 "anthropic.claude-code",
-				"esbenp.prettier-vscode",
+				"biomejs.biome",
                 "streetsidesoftware.code-spell-checker"
 			],
 			"settings": {
 				"[typescript]": {
 					"editor.formatOnSave": true,
-					"editor.defaultFormatter": "esbenp.prettier-vscode"
+					"editor.defaultFormatter": "biomejs.biome"
 				},
 				"[typescriptreact]": {
 					"editor.formatOnSave": true,
-					"editor.defaultFormatter": "esbenp.prettier-vscode"	
+					"editor.defaultFormatter": "biomejs.biome"	
 				}
 			}
 		}

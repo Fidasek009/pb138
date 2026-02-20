@@ -7,7 +7,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "encore run",
-		"test": "bun test",
+		"test": "encore test ./...",
 		"format": "biome format --write .",
 		"lint": "biome lint .",
 		"check": "biome check --write ."

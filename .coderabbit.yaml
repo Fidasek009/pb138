@@ -77,16 +77,21 @@ reviews:
         - Keep styling aligned with design tokens; avoid one-off hardcoded styles.
         - Avoid exposing secrets or relying on client-only validation.
 
-    # Backend-specific guidance for API contracts, security, and performance
+    # Backend-specific guidance for Encore.ts services
     - path: "backend/**/*.{ts,mts,cts}"
       instructions: |
+        - Assume Encore.ts conventions and primitives unless PR states otherwise.
+        - Keep service/API boundaries explicit and avoid leaking internal implementation details.
         - Validate API contracts at runtime and keep error/status formats consistent.
         - Enforce authorization and sanitize/validate inputs/outputs.
+        - Keep background jobs/async workflows idempotent and retry-safe.
         - Flag obvious N+1 data access patterns and sensitive data leakage in logs.
 
-    # Test files should be deterministic, cover various cases, and avoid over-mocking
-    - path: "**/*.test.ts"
+    # Vitest test guidance
+    - path: "**/*.{test,spec}.{ts,tsx,mts,cts}"
       instructions: |
+        - Use Vitest patterns and prefer `describe`/`it` with explicit assertions.
         - Prefer deterministic tests with clear assertions.
         - Cover success, failure, and edge cases.
         - Ensure async tests clean up correctly and avoid over-mocking.
+        - Use fake timers/mocks carefully to avoid hiding integration regressions.

@@ -10,7 +10,7 @@
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {
 			"moby": false,
 			"dockerDashComposeVersion": "none",
-		    "installDockerComposeSwitch": false
+			"installDockerComposeSwitch": false
 		}
 	},
 
@@ -31,9 +31,9 @@
 			"extensions": [
 				"docker.docker",
 				"oven.bun-vscode",
-                "anthropic.claude-code",
+				"anthropic.claude-code",
 				"biomejs.biome",
-                "streetsidesoftware.code-spell-checker"
+				"streetsidesoftware.code-spell-checker"
 			],
 			"settings": {
 				"[typescript]": {
@@ -42,7 +42,7 @@
 				},
 				"[typescriptreact]": {
 					"editor.formatOnSave": true,
-					"editor.defaultFormatter": "biomejs.biome"	
+					"editor.defaultFormatter": "biomejs.biome"
 				}
 			}
 		}

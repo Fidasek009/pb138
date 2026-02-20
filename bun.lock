@@ -5,7 +5,7 @@
     "": {
       "name": "pb138",
       "devDependencies": {
-        "@biomejs/biome": "^2.4.3",
+        "@biomejs/biome": "^2.4.4",
         "@commitlint/cli": "^19.8.1",
         "@commitlint/config-conventional": "^19.8.1",
         "husky": "^9.1.7",
@@ -37,7 +37,6 @@
         "tailwind-merge": "^3.5.0",
       },
       "devDependencies": {
-        "@biomejs/biome": "^2.4.3",
         "@eslint/js": "^9.39.1",
         "@tailwindcss/vite": "^4.2.0",
         "@types/node": "^24.10.1",

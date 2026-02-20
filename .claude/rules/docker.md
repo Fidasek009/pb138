@@ -24,7 +24,7 @@ CMD npm start
 
 # ✅ Good: Multi-stage, pinned version, non-root, optimized
 # Stage 1: Build
-FROM node:24-alpine3.19 AS builder
+FROM node:24-alpine3.22 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -32,7 +32,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Runtime
-FROM node:24-alpine3.19 AS runner
+FROM node:24-alpine3.22 AS runner
 WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY --from=builder /app/dist ./dist
@@ -50,7 +50,7 @@ CMD ["node", "dist/main.js"]
 Copy dependency files before source code.
 
 ```dockerfile
-FROM node:24-alpine
+FROM node:24-alpine3.22
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
@@ -106,7 +106,7 @@ volumes:
 <boundaries>
 - ✅ **Always:** Multi-stage builds to separate build from runtime
 - ✅ **Always:** Non-root user in final stage
-- ✅ **Always:** Pin base image versions (e.g., `node:18-alpine3.19`)
+- ✅ **Always:** Pin base image versions (e.g., `node:24-alpine3.22`)
 - ✅ **Always:** Maintain `.dockerignore` (exclude `.git`, `node_modules`, secrets)
 - ✅ **Always:** Exec form for `CMD`/`ENTRYPOINT` (`CMD ["node", "app.js"]`)
 - ✅ **Always:** Define `HEALTHCHECK` instruction

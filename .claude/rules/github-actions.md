@@ -29,11 +29,15 @@ jobs:
           path: ${{ steps.package.outputs.path }}
   
   deploy:
+    runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
     environment: production
     steps:
       - uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: dist
 ```
 </workflow_structure>
 <security>
@@ -68,7 +72,7 @@ strategy:
   fail-fast: false
   matrix:
     os: [ubuntu-latest, windows-latest]
-    node-version: [18.x, 20.x]
+    node-version: [22.x, 24.x]
 ```
 
 **Checkout:**

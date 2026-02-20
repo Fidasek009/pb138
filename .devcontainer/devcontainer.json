@@ -20,6 +20,10 @@
 	// Use 'updateContentCommand' to run commands on every container start.
 	"updateContentCommand": "git fetch --all --prune",
 
+	"remoteEnv": {
+		"ENCORE_RUNTIME_LIB": "/usr/local/encore/runtimes/js/encore-runtime.node"
+	},
+
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {

@@ -72,4 +72,4 @@ jobs:
 
       - name: Run tests
         working-directory: backend
-        run: encore test ./...
+        run: encore test

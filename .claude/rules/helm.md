@@ -53,7 +53,7 @@ value: {{ .Values.dbHost | quote }}
 image:
   tag: "1.2.3"
   pullPolicy: "IfNotPresent"
-port: "8080"
+port: 8080
 enabled: false  # Booleans: no quotes
 ```
 
@@ -117,13 +117,13 @@ resources:
 
 livenessProbe:
   httpGet:
-    path: {{ .Values.healthCheckPath | default "/health" }}
+    path: {{ .Values.livenessProbe.path | default "/health" }}
     port: http
   initialDelaySeconds: 30
 
 readinessProbe:
   httpGet:
-    path: {{ .Values.healthCheckPath | default "/ready" }}
+    path: {{ .Values.readinessProbe.path | default "/ready" }}
     port: http
   initialDelaySeconds: 5
 ```

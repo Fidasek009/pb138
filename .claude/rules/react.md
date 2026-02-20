@@ -50,27 +50,32 @@ export const UserCard = ({ name, role = 'User', onAction }: UserCardProps) => {
 </components>
 <data_fetching>
 ```tsx
+const isError = (value: unknown): value is Error => value instanceof Error;
+
 const useUserData = (userId: string) => {
   const [data, setData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    
+    const controller = new AbortController();
+    setLoading(true);
+
     const fetchData = async () => {
       try {
-        const result = await api.getUser(userId);
-        if (mounted) setData(result);
+        const result = await api.getUser(userId, { signal: controller.signal });
+        setData(result);
       } catch (err) {
-        if (mounted) setError(err as Error);
+        // Ignore abort errors — they are intentional cleanup, not real failures.
+        if (controller.signal.aborted) return;
+        setError(isError(err) ? err : new Error(String(err)));
       } finally {
-        if (mounted) setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     };
 
     fetchData();
-    return () => { mounted = false; };
+    return () => { controller.abort(); };
   }, [userId]);
 
   return { data, loading, error };

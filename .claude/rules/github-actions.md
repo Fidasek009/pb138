@@ -23,6 +23,10 @@ jobs:
       - uses: actions/checkout@v4
       - id: package
         run: echo "path=dist.zip" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: ${{ steps.package.outputs.path }}
   
   deploy:
     needs: build
@@ -110,7 +114,7 @@ environment:
 - ✅ **Always:** Pin actions to `@v4` or commit SHA (never `@main`)
 - ✅ **Always:** Set `permissions: contents: read` by default
 - ✅ **Always:** Use `${{ secrets.NAME }}` for sensitive data
-- ✅ **Always:** Use `fetch-depth: 1` for checkout
+- ✅ **Always:** Use `fetch-depth: 1` for checkout unless full history is required (e.g., semantic-release, conventional-changelog, `git describe`)
 - ✅ **Always:** Use `hashFiles()` for cache keys
 - ⚠️ **Ask:** Before adding self-hosted runners
 - ⚠️ **Ask:** Before adding new workflow triggers

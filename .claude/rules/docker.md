@@ -24,7 +24,7 @@ CMD npm start
 
 # ✅ Good: Multi-stage, pinned version, non-root, optimized
 # Stage 1: Build
-FROM node:18-alpine3.19 AS builder
+FROM node:24-alpine3.19 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -32,15 +32,17 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Runtime
-FROM node:18-alpine3.19 AS runner
+FROM node:24-alpine3.19 AS runner
 WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 RUN chown -R appuser:appgroup /app
 USER appuser
 EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost:3000/health || exit 1
 CMD ["node", "dist/main.js"]
 ```
 
@@ -48,10 +50,10 @@ CMD ["node", "dist/main.js"]
 Copy dependency files before source code.
 
 ```dockerfile
-FROM node:18-alpine
+FROM node:24-alpine
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 COPY . .
 CMD ["node", "server.js"]
 ```

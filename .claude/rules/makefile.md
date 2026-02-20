@@ -79,8 +79,9 @@ ifndef API_KEY
 $(error API_KEY not set)
 endif
 
-# Set SHELL for consistency
-SHELL := /bin/bash
+# Use POSIX shell by default for portability (Alpine, minimal CI).
+# Switch to /bin/bash only if recipes use bash-specific syntax (arrays, [[ ]], etc.).
+SHELL := /bin/sh
 
 # Quote variables in shell
 backup:
@@ -89,7 +90,7 @@ backup:
 </security>
 <template>
 ```makefile
-SHELL := /bin/bash
+SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 CONFIG ?= config.yaml

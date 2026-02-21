@@ -24,7 +24,4 @@ RUN apt-get update \
  && curl -sL https://encore.dev/install.sh | bash \
  && ln -sf /usr/local/encore/bin/encore /usr/local/bin/encore
 
-
-WORKDIR /workspaces/app
-
 USER vscode

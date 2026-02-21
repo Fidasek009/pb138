@@ -1,13 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-# Install frontend dependencies
-cd frontend && bun install && cd ..
+# Install all workspace dependencies
+bun install
 
-# Install backend dependencies
-cd backend && bun install && cd ..
-
-# Install Biome globally
-bun install -g @biomejs/biome
+# Disable Encore stealing your data
+cd backend && encore telemetry disable
 
 echo "Sukces! Kontainer sudah siap digunakan."

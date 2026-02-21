@@ -1,0 +1,13 @@
+# Global rule — default owners for everything not matched below
+*                   @Fidasek009
+
+# Frontend
+/frontend/          @Fidasek009
+
+# Backend
+/backend/           @Fidasek009
+
+# CI/CD and infrastructure — only project leads should touch these
+/.github/           @Fidasek009
+/.devcontainer/     @Fidasek009
+/helm/              @Fidasek009

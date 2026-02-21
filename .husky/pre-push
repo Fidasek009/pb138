@@ -1,1 +1,1 @@
-cd backend && bun test
+cd backend && encore test

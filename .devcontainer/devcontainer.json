@@ -45,7 +45,7 @@
 					"editor.formatOnSave": true,
 					"editor.defaultFormatter": "biomejs.biome"
 				},
-				"biome.configurationPath": "/workspaces/pb138/biome.json"
+				"biome.configurationPath": "${containerWorkspaceFolder}/biome.json"
 			}
 		}
 	}

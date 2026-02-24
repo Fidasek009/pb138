@@ -32,6 +32,7 @@
 				"docker.docker",
 				"oven.bun-vscode",
 				"anthropic.claude-code",
+				"bradlc.vscode-tailwindcss",
 				"biomejs.biome",
 				"streetsidesoftware.code-spell-checker"
 			],

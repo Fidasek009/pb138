@@ -22,6 +22,8 @@ RUN apt-get update \
  # Install encore
  && export ENCORE_INSTALL=/usr/local/encore \
  && curl -sL https://encore.dev/install.sh | bash \
- && ln -sf /usr/local/encore/bin/encore /usr/local/bin/encore
+ && ln -sf /usr/local/encore/bin/encore /usr/local/bin/encore \
+ # Install Claude Code
+ && curl -fsSL https://claude.ai/install.sh | sudo -u vscode bash
 
 USER vscode

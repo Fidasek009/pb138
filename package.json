@@ -1,10 +1,6 @@
 {
 	"name": "pb138",
 	"private": true,
-	"workspaces": [
-		"frontend",
-		"backend"
-	],
 	"scripts": {
 		"prepare": "husky",
 		"lint": "biome lint .",

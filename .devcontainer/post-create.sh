@@ -5,6 +5,6 @@ set -euo pipefail
 bun install
 
 # Disable Encore stealing your data
-(cd backend && encore telemetry disable)
+(cd backend && encore telemetry disable) || true
 
 echo "Sukces! Kontainer sudah siap digunakan."

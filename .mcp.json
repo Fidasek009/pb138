@@ -19,10 +19,6 @@
 			},
 			"alwaysAllow": ["resolve-library-id", "query-docs"],
 			"disabled": false
-		},
-		"encore-mcp": {
-			"args": ["mcp", "run", "--app=6wwmw"],
-			"command": "encore"
 		}
 	}
 }

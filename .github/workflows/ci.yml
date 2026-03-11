@@ -29,8 +29,8 @@ jobs:
       - name: Biome check
         run: biome ci .
 
-  build-frontend:
-    name: Build Frontend
+  build:
+    name: Build
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -44,15 +44,16 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        working-directory: frontend
         run: bun install --frozen-lockfile
 
-      - name: Type-check & build
-        working-directory: frontend
+      - name: Type-check
+        run: bun run type-check
+
+      - name: Build all
         run: bun run build
 
-  test-backend:
-    name: Test Backend
+  test:
+    name: Test
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -60,18 +61,13 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install Encore CLI
-        run: curl -L https://encore.dev/install.sh | bash && echo "$HOME/.encore/bin" >> "$GITHUB_PATH"
-
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: "1.3.9"
           cache: true
 
       - name: Install dependencies
-        working-directory: backend
         run: bun install --frozen-lockfile
 
       - name: Run tests
-        working-directory: backend
-        run: encore test
+        run: bun run test

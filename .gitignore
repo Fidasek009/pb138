@@ -20,5 +20,8 @@ dist/
 # VS Code settings
 .vscode/
 
+# Turbo
+.turbo/
+
 # Private files for personal use
 /private/

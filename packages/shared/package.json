@@ -14,6 +14,9 @@
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
+		"lint": "biome lint .",
+		"check": "biome check .",
+		"test": "bun -e \"console.log('No tests in shared')\"",
 		"type-check": "tsc --noEmit"
 	},
 	"devDependencies": {

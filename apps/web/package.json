@@ -10,6 +10,7 @@
 		"check": "biome check .",
 		"fix": "biome check --write .",
 		"type-check": "tsc --noEmit",
+		"test": "bun -e \"console.log('No tests in web')\"",
 		"preview": "vite preview"
 	},
 	"dependencies": {

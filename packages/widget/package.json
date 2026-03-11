@@ -19,7 +19,8 @@
 		"lint": "biome lint .",
 		"check": "biome check .",
 		"fix": "biome check --write .",
-		"type-check": "tsc --noEmit"
+		"type-check": "tsc --noEmit",
+		"test": "bun -e \"console.log('No tests in widget')\""
 	},
 	"peerDependencies": {
 		"react": "^18 || ^19",

@@ -10,3 +10,11 @@ describe("GET /health", () => {
 		expect(body).toEqual({ message: "OK", success: true });
 	});
 });
+
+describe("unknown routes", () => {
+	it("returns 404", async () => {
+		const res = await app.fetch(new Request("http://localhost/unknown"));
+
+		expect(res.status).toBe(404);
+	});
+});

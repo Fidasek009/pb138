@@ -7,6 +7,7 @@
 			"inputs": [
 				"src/**/*.ts",
 				"src/**/*.tsx",
+				"src/**/*.css",
 				"tsconfig.json",
 				"tsconfig.*.json",
 				"vite.config.ts",
@@ -16,16 +17,17 @@
 			"env": ["NODE_ENV", "VITE_*"]
 		},
 		"dev": {
+			"dependsOn": ["^build"],
 			"cache": false,
 			"persistent": true
 		},
 		"lint": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/**/*.ts", "src/**/*.tsx", "package.json"]
+			"inputs": ["src/**/*.ts", "src/**/*.tsx", "package.json", "biome.json"]
 		},
 		"check": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/**/*.ts", "src/**/*.tsx", "package.json"]
+			"inputs": ["src/**/*.ts", "src/**/*.tsx", "package.json", "biome.json"]
 		},
 		"type-check": {
 			"dependsOn": ["^build"],

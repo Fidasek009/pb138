@@ -1,7 +1,5 @@
-export type WidgetProps = {
-	apiUrl: string;
-};
+export type WidgetProps = Record<string, never>;
 
-export const Widget = ({ apiUrl: _apiUrl }: WidgetProps) => {
+export const Widget = (_props: WidgetProps) => {
 	return <div>AI Chat Widget</div>;
 };

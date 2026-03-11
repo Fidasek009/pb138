@@ -1,1 +1,1 @@
-cd backend && encore test
+bun run test

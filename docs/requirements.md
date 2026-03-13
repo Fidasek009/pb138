@@ -19,12 +19,11 @@
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
 | FR-1.1 | End user can send text messages to the bot and receive AI-generated responses | High | Approved |
-| FR-1.2 | Widget supports light and dark mode, respecting the client's configuration and/or the end user's system preference | High | Approved |
-| FR-1.3 | Conversation history is persisted in the end user's browser local storage so the context survives page reloads | High | Approved |
-| FR-1.4 | Widget can be minimised and reopened without losing the conversation state | High | Approved |
-| FR-1.5 | Widget displays a typing indicator while the bot is generating a response | High | Approved |
-| FR-1.6 | End user can clear / reset the current conversation | Low | Draft |
-| FR-1.7 | End user can rate their satisfaction at the end of a conversation (e.g. thumbs up/down or star rating) | Low | Draft |
+| FR-1.2 | Conversation history is persisted in the end user's browser local storage so the context survives page reloads | High | Approved |
+| FR-1.3 | Widget can be minimised and reopened without losing the conversation state | High | Approved |
+| FR-1.4 | Widget displays a typing indicator while the bot is generating a response | High | Approved |
+| FR-1.5 | End user can clear / reset the current conversation | Low | Draft |
+| FR-1.6 | End user can rate their satisfaction at the end of a conversation (e.g. thumbs up/down or star rating) | Low | Draft |
 
 ### FR-2: Client Dashboard
 
@@ -118,6 +117,7 @@
 | ID | Requirement | Notes | Priority |
 |----|-------------|-------|----------|
 | NFR-5.1 | Widget must be responsive and usable on mobile devices | | High |
+| NFR-5.2 | Widget supports light and dark mode, respecting the client's configuration and/or the end user's system preference | High | Approved |
 
 ---
 

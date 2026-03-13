@@ -19,7 +19,7 @@
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
 | FR-1.1 | End user can send text messages to the bot and receive AI-generated responses | High | Approved |
-| FR-1.2 | Conversation history is persisted in the end user's browser local storage so the context survives page reloads | High | Approved |
+| FR-1.2 | Conversation history is persisted in the end user's browser so the context survives page reloads | High | Approved |
 | FR-1.3 | Widget can be minimised and reopened without losing the conversation state | High | Approved |
 | FR-1.4 | Widget displays a typing indicator while the bot is generating a response | High | Approved |
 | FR-1.5 | End user can clear / reset the current conversation | Low | Draft |

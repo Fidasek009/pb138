@@ -37,7 +37,7 @@
 | FR-2.2 | Registration is free when the client provides their own OpenAI API key | High | Draft |
 | FR-2.3 | Registration requires a paid subscription when the client uses the platform's shared API key | High | Draft |
 | FR-2.4 | Client can log in and log out of the dashboard | High | Approved |
-| FR-2.5 | Client can retrieve an embed snippet (script tag / iframe) to place the widget on their website | High | Draft |
+| FR-2.5 | Client can use an npm-published React component to place the widget on their website | High | Draft |
 
 #### FR-2b: Bot configuration
 
@@ -86,7 +86,7 @@
 
 | ID | Requirement | Notes | Priority |
 |----|-------------|-------|----------|
-| NFR-1.1 | The widget must be implemented as a self-contained React component publishable as an npm package | Enables easy embedding via script tag | High |
+| NFR-1.1 | The widget must be implemented as a self-contained React component publishable as an npm package | Enables easy integration into existing React projects using standard package managers (npm/yarn/pnpm) | High |
 | NFR-1.2 | Client documentation (integration guide, configuration reference) must be provided | Markdown or hosted docs | High |
 
 ### NFR-2: Safety & Content Policy

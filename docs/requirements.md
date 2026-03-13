@@ -118,6 +118,7 @@
 | NFR-3.2 | All API endpoints must require authentication; widget endpoints are scoped to a per-client public token | | High |
 | NFR-3.3 | Dashboard and back-office must use HTTPS | | High |
 | NFR-3.4 | The system must log all platform admin access actions | Related to FR-3.3 | Medium |
+| NFR-3.5 | The system should constrain custom MCP endpoints | Related to FR-2.16 | High |
 
 ### NFR-4: Performance
 

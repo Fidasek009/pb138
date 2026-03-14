@@ -1,3 +1,4 @@
+```mermaid
 erDiagram
     CLIENT {
         uuid id PK
@@ -109,3 +110,5 @@ erDiagram
 
     ADMIN_USER ||--o{ ADMIN_ACCESS_LOG : performs
     CLIENT ||--o{ ADMIN_ACCESS_LOG : target
+
+```

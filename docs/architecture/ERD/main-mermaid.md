@@ -7,18 +7,8 @@ erDiagram
         string password_hash
         decimal balance_usd
         decimal monthly_usage_limit
-        boolean is_active
+        datetime last_active
         datetime created_at
-    }
-
-    WIDGET_CONFIG {
-        uuid id PK
-        uuid client_id FK
-        string accent_color
-        string bot_avatar_url
-        string widget_position
-        boolean dark_mode_enabled
-        datetime updated_at
     }
 
     BOT_CONFIG {
@@ -38,14 +28,15 @@ erDiagram
         datetime created_at
     }
 
-    MCP_SERVER {
+    CUSTOM_MCP_SERVER {
         uuid id PK
         uuid client_id FK
-        string endpoint_url
-        string api_key_encrypted
-        boolean is_active
-        datetime created_at
-        boolean is_custom
+        JSONB mcp_config
+    }
+
+    PRE_MADE_MCP_SERVER {
+        uuid id PK
+        JSONB mcp_config
     }
 
     END_USER_SESSION {
@@ -61,7 +52,6 @@ erDiagram
         uuid session_id FK
         uuid client_id FK
         datetime started_at
-        datetime ended_at
         int satisfaction_rating
     }
 
@@ -86,7 +76,6 @@ erDiagram
         uuid id PK
         string email
         string password_hash
-        string role
         datetime created_at
     }
 

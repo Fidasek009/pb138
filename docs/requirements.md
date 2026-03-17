@@ -41,16 +41,16 @@
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.4 | Client can use platform's default API endpoint | High | Approved
-| FR-2.5 | Client can configure a custom API endpoint and API key | Medium | Approved
+| FR-2.4 | Client can use platform's default API endpoint | High | Approved |
+| FR-2.5 | Client can configure a custom API endpoint and API key | Medium | Approved |
 
 #### FR-2c: Usage and billing
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.6 | Client can add funds to their account | Medium | Approved
-| FR-2.7 | Client can set a monthly limit (in USD) for API usage | Low | Approved
-| FR-2.8 | Client can configure email notifications when a usage threshold is reached | Low | Approved
+| FR-2.6 | Client can add funds to their account | Medium | Approved |
+| FR-2.7 | Client can set a monthly limit (in USD) for API usage | Low | Approved |
+| FR-2.8 | Client can configure email notifications when a usage threshold is reached | Low | Approved |
 
 #### FR-2d: Bot configuration
 

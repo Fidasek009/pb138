@@ -76,7 +76,6 @@
 | FR-2.16 | Dashboard displays graphs of token consumption over time | Medium | Approved |
 | FR-2.17 | Dashboard displays the total number of end-user questions over time | Medium | Approved |
 | FR-2.18 | Dashboard supports light and dark mode | High | Approved |
-| FR-2.19 | Client can customise widget appearance (accent colour, bot avatar, widget position) | Medium | Approved |
 
 ### FR-3: Back-office
 
@@ -99,7 +98,8 @@
 | ID | Requirement | Notes | Priority |
 |----|-------------|-------|----------|
 | NFR-1.1 | The widget must be implemented as a self-contained React component publishable as an npm package | Enables easy integration into existing React projects using standard package managers (npm/yarn/pnpm) | High |
-| NFR-1.2 | Client documentation (integration guide, configuration reference) must be provided | Markdown or hosted docs | High |
+| NFR-1.2 | The widget component allows for visual customization (accent colour, bot avatar, widget position) | | Medium |
+| NFR-1.3 | Client documentation (integration guide, configuration reference) must be provided | Markdown or hosted docs | High |
 
 ### NFR-2: Safety & Content Policy
 

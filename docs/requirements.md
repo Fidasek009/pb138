@@ -67,17 +67,16 @@
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
 | FR-2.14 | Client can select one of the platform's pre-built MCP connectors (e.g. read-only product database view) to give the bot access to structured data | High | Approved |
-| FR-2.15 | Client can upload or paste a JSON document that the bot can query as a knowledge source | Medium | Approved |
-| FR-2.16 | Client can register a custom MCP endpoint URL to connect proprietary data sources | Low | Approved |
+| FR-2.15 | Client can register a custom MCP endpoint URL to connect proprietary data sources | Low | Approved |
 
 #### FR-2f: Analytics & appearance
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.17 | Dashboard displays graphs of token consumption over time | Medium | Approved |
-| FR-2.18 | Dashboard displays the total number of end-user questions over time | Medium | Approved |
-| FR-2.19 | Dashboard supports light and dark mode | High | Approved |
-| FR-2.20 | Client can customise widget appearance (accent colour, bot avatar, widget position) | Medium | Approved |
+| FR-2.16 | Dashboard displays graphs of token consumption over time | Medium | Approved |
+| FR-2.17 | Dashboard displays the total number of end-user questions over time | Medium | Approved |
+| FR-2.18 | Dashboard supports light and dark mode | High | Approved |
+| FR-2.19 | Client can customise widget appearance (accent colour, bot avatar, widget position) | Medium | Approved |
 
 ### FR-3: Back-office
 

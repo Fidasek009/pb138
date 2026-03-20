@@ -11,7 +11,8 @@
 		"fix": "biome check --write .",
 		"type-check": "tsc --noEmit",
 		"test": "bun -e \"console.log('No tests in web')\"",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"generate-routes": "tsr generate"
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.2.4",
@@ -33,6 +34,7 @@
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.2.0",
+		"@tanstack/router-cli": "^1.114.3",
 		"@tanstack/router-devtools": "^1.166.10",
 		"@tanstack/router-plugin": "^1.167.1",
 		"@types/node": "^24.10.1",

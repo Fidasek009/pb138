@@ -13,8 +13,8 @@
 export const COLORS = {
 	/** Primary green brand color */
 	primary: "#16a34a",
-	/** Primary hover state */
-	primaryHover: "#16a34a/90",
+	/** Primary hover state - 90% opacity */
+	primaryHover: "rgba(22, 163, 74, 0.9)",
 	/** Primary with opacity for backgrounds */
 	primaryLight: "#f0fdf4",
 

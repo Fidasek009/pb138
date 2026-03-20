@@ -300,12 +300,9 @@ export function SettingsPage() {
 								</h3>
 								<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 									{preconfiguredTools.map((tool) => (
-										<motion.div
+										<div
 											key={tool.id}
-											whileHover={{ scale: 1.02 }}
-											whileTap={{ scale: 0.98 }}
-											className="cursor-pointer rounded-lg border border-border p-4 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
-											onClick={(e) => handleAddTool(tool, e)}
+											className="rounded-lg border border-border p-4 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700"
 										>
 											<div className="mb-2 flex items-center justify-between">
 												<div
@@ -333,7 +330,7 @@ export function SettingsPage() {
 											<p className="text-muted-foreground text-sm">
 												{tool.description}
 											</p>
-										</motion.div>
+										</div>
 									))}
 								</div>
 							</div>

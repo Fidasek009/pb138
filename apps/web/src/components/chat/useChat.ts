@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DEFAULTS, STORAGE_KEYS, UI } from "@/lib/constants";
 import type { Message } from "./types";
 
-const STORAGE_KEY = "chatbot_messages";
+const STORAGE_KEY = STORAGE_KEYS.CHAT_MESSAGES;
 
 interface UseChatOptions {
 	initialMessage?: string;
@@ -38,7 +39,7 @@ function saveMessages(messages: Message[]): void {
 }
 
 export function useChat(options: UseChatOptions = {}): UseChatReturn {
-	const { initialMessage = "Hi! How can I help you today?" } = options;
+	const { initialMessage = DEFAULTS.CHAT_INITIAL_MESSAGE } = options;
 
 	const [messages, setMessages] = useState<Message[]>(() => {
 		const saved = loadMessages();
@@ -48,15 +49,15 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 	});
 	const [isTyping, setIsTyping] = useState(false);
 	const [showRating, setShowRating] = useState(() => {
-		return localStorage.getItem("chatbot_rating_shown") === "true";
+		return localStorage.getItem(STORAGE_KEYS.CHAT_RATING_SHOWN) === "true";
 	});
 
 	const responseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	// Persist messages to localStorage and show rating after 3 messages
+	// Persist messages to localStorage and show rating after N messages
 	useEffect(() => {
 		saveMessages(messages);
-		if (messages.length > 3 && !isTyping) {
+		if (messages.length > UI.CHAT_MAX_MESSAGES_BEFORE_RATING && !isTyping) {
 			setShowRating(true);
 		}
 	}, [messages, isTyping]);

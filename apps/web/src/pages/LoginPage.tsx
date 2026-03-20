@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm, validators } from "@/lib/useForm";
+import { useForm } from "@/lib/useForm";
 import { useTheme } from "@/lib/useTheme";
+import { loginSchema } from "@/schemas";
 
 interface LoginFormData extends Record<string, string> {
 	email: string;
@@ -20,14 +21,14 @@ interface LoginFormData extends Record<string, string> {
 }
 
 const validateLoginForm = (values: LoginFormData) => {
+	const result = loginSchema.safeParse(values);
+	if (result.success) return {};
+
 	const errors: Partial<Record<keyof LoginFormData, string>> = {};
-
-	const emailError = validators.email(values.email);
-	if (emailError) errors.email = emailError;
-
-	const passwordError = validators.password(values.password, 6);
-	if (passwordError) errors.password = passwordError;
-
+	for (const issue of result.error.issues) {
+		const path = issue.path[0] as keyof LoginFormData;
+		errors[path] = issue.message;
+	}
 	return errors;
 };
 

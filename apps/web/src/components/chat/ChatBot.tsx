@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BRAND_COLORS } from "@/lib/colors";
 import { useChat } from "./useChat";
 import { useSyncedTheme } from "./useSyncedTheme";
 
@@ -93,7 +94,10 @@ export function ChatBot() {
 							}`}
 						>
 							<div className="flex items-center gap-2">
-								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#16a34a] text-white">
+								<div
+									className="flex h-8 w-8 items-center justify-center rounded-full text-white"
+									style={{ backgroundColor: BRAND_COLORS.primary }}
+								>
 									<Bot size={18} />
 								</div>
 								<div>
@@ -215,7 +219,11 @@ export function ChatBot() {
 				)}
 			</AnimatePresence>
 
-			<FAB isOpen={isOpen} onClick={() => setIsOpen((prev) => !prev)} />
+			<FAB
+				isOpen={isOpen}
+				isDark={isDark}
+				onClick={() => setIsOpen((prev) => !prev)}
+			/>
 		</div>
 	);
 }
@@ -317,17 +325,22 @@ function Rating({ isDark, onRate }: RatingProps) {
 
 interface FABProps {
 	isOpen: boolean;
+	isDark: boolean;
 	onClick: () => void;
 }
 
-function FAB({ isOpen, onClick }: FABProps) {
+function FAB({ isOpen, isDark, onClick }: FABProps) {
 	return (
 		<motion.button
 			whileHover={{ scale: 1.05 }}
 			whileTap={{ scale: 0.95 }}
 			onClick={onClick}
 			aria-label={isOpen ? "Close chat" : "Open chat"}
-			className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-[#16a34a] text-white shadow-xl hover:bg-[#16a34a]/90 focus:outline-none focus:ring-4 focus:ring-[#16a34a]/50 focus:ring-offset-2 dark:border-zinc-800"
+			className="flex h-14 w-14 items-center justify-center rounded-full border-2 text-white shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-offset-2"
+			style={{
+				backgroundColor: BRAND_COLORS.primary,
+				borderColor: isDark ? "transparent" : "white",
+			}}
 		>
 			{isOpen ? <X size={24} /> : <Bot size={28} />}
 		</motion.button>

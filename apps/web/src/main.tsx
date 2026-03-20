@@ -1,11 +1,12 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { DEFAULTS, STORAGE_KEYS } from "@/lib/constants";
 import "./index.css";
 
-// Initialize theme on load
+// Initialize theme on load before React renders
 if (typeof window !== "undefined") {
-	const savedTheme = localStorage.getItem("theme") || "light";
+	const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || DEFAULTS.THEME;
 	if (savedTheme === "dark") {
 		document.documentElement.classList.add("dark");
 	} else {

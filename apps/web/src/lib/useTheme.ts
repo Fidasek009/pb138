@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { DEFAULTS, STORAGE_KEYS } from "@/lib/constants";
 
 export type Theme = "light" | "dark";
 
 export function useTheme() {
 	const [theme, setTheme] = useState<Theme>(() => {
-		if (typeof window === "undefined") return "light";
-		const stored = localStorage.getItem("theme");
-		return stored === "light" || stored === "dark" ? stored : "light";
+		if (typeof window === "undefined") return DEFAULTS.THEME;
+		const stored = localStorage.getItem(STORAGE_KEYS.THEME);
+		return stored === "light" || stored === "dark" ? stored : DEFAULTS.THEME;
 	});
 
 	useEffect(() => {
@@ -16,7 +17,7 @@ export function useTheme() {
 		} else {
 			root.classList.remove("dark");
 		}
-		localStorage.setItem("theme", theme);
+		localStorage.setItem(STORAGE_KEYS.THEME, theme);
 	}, [theme]);
 
 	const toggleTheme = () => {

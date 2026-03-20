@@ -11,33 +11,27 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm, validators } from "@/lib/useForm";
+import { useForm } from "@/lib/useForm";
 import { useTheme } from "@/lib/useTheme";
+import { registerSchema } from "@/schemas";
 
 interface RegisterFormData extends Record<string, string> {
 	email: string;
 	password: string;
+	confirmPassword: string;
 }
 
 const validateRegisterForm = (values: RegisterFormData) => {
+	const result = registerSchema.safeParse(values);
+	if (result.success) return {};
+
 	const errors: Partial<Record<keyof RegisterFormData, string>> = {};
-
-	const emailError = validators.email(values.email);
-	if (emailError) errors.email = emailError;
-
-	const password = values.password;
-	if (!password) {
-		errors.password = "Password is required";
-	} else if (password.length < 6) {
-		errors.password = "Password must be at least 6 characters";
-	} else if (!/[A-Z]/.test(password)) {
-		errors.password = "Password must contain at least one uppercase letter";
-	} else if (!/[a-z]/.test(password)) {
-		errors.password = "Password must contain at least one lowercase letter";
-	} else if (!/[0-9]/.test(password)) {
-		errors.password = "Password must contain at least one number";
+	for (const issue of result.error.issues) {
+		const path = issue.path[0] as keyof RegisterFormData;
+		if (!errors[path]) {
+			errors[path] = issue.message;
+		}
 	}
-
 	return errors;
 };
 
@@ -47,7 +41,7 @@ export function RegisterPage() {
 
 	const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
 		useForm<RegisterFormData>({
-			initialValues: { email: "", password: "" },
+			initialValues: { email: "", password: "", confirmPassword: "" },
 			validate: validateRegisterForm,
 			onSubmit: async () => {
 				// Simulated registration - replace with actual API call
@@ -57,6 +51,8 @@ export function RegisterPage() {
 
 	const showEmailError = touched.email && errors.email;
 	const showPasswordError = touched.password && errors.password;
+	const showConfirmPasswordError =
+		touched.confirmPassword && errors.confirmPassword;
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
@@ -153,6 +149,40 @@ export function RegisterPage() {
 									>
 										<AlertCircle size={14} />
 										<span>{errors.password}</span>
+									</div>
+								)}
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor="confirm-password">Confirm Password</Label>
+								<Input
+									id="confirm-password"
+									name="confirmPassword"
+									type="password"
+									value={values.confirmPassword ?? ""}
+									onChange={(e) =>
+										handleChange("confirmPassword")(e.target.value)
+									}
+									onBlur={handleBlur("confirmPassword")}
+									aria-invalid={Boolean(showConfirmPasswordError)}
+									aria-describedby={
+										showConfirmPasswordError
+											? "confirm-password-error"
+											: undefined
+									}
+									className={
+										showConfirmPasswordError
+											? "border-red-500 focus-visible:ring-red-500"
+											: ""
+									}
+								/>
+								{showConfirmPasswordError && (
+									<div
+										id="confirm-password-error"
+										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+										aria-live="polite"
+									>
+										<AlertCircle size={14} />
+										<span>{errors.confirmPassword}</span>
 									</div>
 								)}
 							</div>

@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BRAND_COLORS } from "@/lib/colors";
 
 type Message = {
 	id: string;
@@ -177,7 +178,10 @@ export function ChatBot() {
 							}`}
 						>
 							<div className="flex items-center gap-2">
-								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#16a34a] text-white">
+								<div
+									className="flex h-8 w-8 items-center justify-center rounded-full text-white"
+									style={{ backgroundColor: BRAND_COLORS.primary }}
+								>
 									<Bot size={18} />
 								</div>
 								<div>
@@ -368,7 +372,10 @@ export function ChatBot() {
 				whileTap={{ scale: 0.95 }}
 				onClick={() => setIsOpen(!isOpen)}
 				aria-label={isOpen ? "Close chat" : "Open chat"}
-				className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-[#16a34a] text-white shadow-xl hover:bg-[#16a34a]/90 focus:outline-none focus:ring-4 focus:ring-[#16a34a]/50 focus:ring-offset-2 dark:border-zinc-800"
+				className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white text-white shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-offset-2 dark:border-zinc-800"
+				style={{
+					backgroundColor: BRAND_COLORS.primary,
+				}}
 			>
 				{isOpen ? <X size={24} /> : <Bot size={28} />}
 			</motion.button>

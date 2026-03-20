@@ -1,4 +1,3 @@
-import { Bot, CreditCard, DollarSign, MessageSquare, Zap } from "lucide-react";
 import {
 	Bar,
 	BarChart,
@@ -10,7 +9,8 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-
+import { PageHeader } from "@/components/layout";
+import { StatCard } from "@/components/stats";
 import {
 	Card,
 	CardContent,
@@ -18,94 +18,26 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-
-const data = [
-	{ name: "Mon", tokens: 4000, questions: 240 },
-	{ name: "Tue", tokens: 3000, questions: 139 },
-	{ name: "Wed", tokens: 2000, questions: 980 },
-	{ name: "Thu", tokens: 2780, questions: 390 },
-	{ name: "Fri", tokens: 1890, questions: 480 },
-	{ name: "Sat", tokens: 2390, questions: 380 },
-	{ name: "Sun", tokens: 3490, questions: 430 },
-];
+import { ADMIN_STATS, type StatIcon, WEEKLY_STATS_DATA } from "@/data/charts";
 
 export function AdminDashboard() {
 	return (
 		<div className="space-y-6">
-			<div>
-				<h2 className="font-bold text-2xl text-foreground tracking-tight">
-					Overview
-				</h2>
-				<p className="text-muted-foreground">
-					Monitor your bot's usage and token consumption.
-				</p>
-			</div>
+			<PageHeader
+				title="Overview"
+				subtitle="Monitor your bot's usage and token consumption."
+			/>
 
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="font-medium text-sm">
-							Current Balance
-						</CardTitle>
-						<DollarSign size={16} className="text-muted-foreground" />
-					</CardHeader>
-					<CardContent>
-						<div className="font-bold text-2xl">$37.50</div>
-						<p className="text-muted-foreground text-xs">Available funds</p>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="font-medium text-sm">Total Tokens</CardTitle>
-						<Zap size={16} className="text-muted-foreground" />
-					</CardHeader>
-					<CardContent>
-						<div className="font-bold text-2xl">19,550</div>
-						<p className="text-muted-foreground text-xs">
-							+20.1% from last month
-						</p>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="font-medium text-sm">
-							Questions Answered
-						</CardTitle>
-						<MessageSquare size={16} className="text-muted-foreground" />
-					</CardHeader>
-					<CardContent>
-						<div className="font-bold text-2xl">3,039</div>
-						<p className="text-muted-foreground text-xs">
-							+15% from last month
-						</p>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="font-medium text-sm">
-							Active Connectors
-						</CardTitle>
-						<Bot size={16} className="text-muted-foreground" />
-					</CardHeader>
-					<CardContent>
-						<div className="font-bold text-2xl">2</div>
-						<p className="text-muted-foreground text-xs">
-							Product DB, Internal Wiki
-						</p>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="font-medium text-sm">Current Spend</CardTitle>
-						<CreditCard size={16} className="text-muted-foreground" />
-					</CardHeader>
-					<CardContent>
-						<div className="font-bold text-2xl">$12.50</div>
-						<p className="text-muted-foreground text-xs">
-							Limit: $50.00 / month
-						</p>
-					</CardContent>
-				</Card>
+				{ADMIN_STATS.map((stat) => (
+					<StatCard
+						key={stat.title}
+						title={stat.title}
+						value={stat.value}
+						subtitle={stat.subtitle}
+						icon={stat.icon as StatIcon}
+					/>
+				))}
 			</div>
 
 			<div className="grid gap-4 md:grid-cols-2">
@@ -118,7 +50,7 @@ export function AdminDashboard() {
 					</CardHeader>
 					<CardContent className="h-[300px]">
 						<ResponsiveContainer width="100%" height="100%">
-							<BarChart data={data}>
+							<BarChart data={WEEKLY_STATS_DATA}>
 								<CartesianGrid
 									strokeDasharray="3 3"
 									vertical={false}
@@ -145,7 +77,11 @@ export function AdminDashboard() {
 										border: "1px solid #e4e4e7",
 									}}
 								/>
-								<Bar dataKey="tokens" fill="#16a34a" radius={[4, 4, 0, 0]} />
+								<Bar
+									dataKey="tokens"
+									fill="var(--primary)"
+									radius={[4, 4, 0, 0]}
+								/>
 							</BarChart>
 						</ResponsiveContainer>
 					</CardContent>
@@ -159,7 +95,7 @@ export function AdminDashboard() {
 					</CardHeader>
 					<CardContent className="h-[300px]">
 						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={data}>
+							<LineChart data={WEEKLY_STATS_DATA}>
 								<CartesianGrid
 									strokeDasharray="3 3"
 									vertical={false}
@@ -192,7 +128,7 @@ export function AdminDashboard() {
 								<Line
 									type="monotone"
 									dataKey="questions"
-									stroke="#16a34a"
+									stroke="var(--primary)"
 									strokeWidth={2}
 									activeDot={{ r: 8 }}
 								/>

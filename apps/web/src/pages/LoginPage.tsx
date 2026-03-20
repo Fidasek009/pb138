@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,50 +11,42 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm, validators } from "@/lib/useForm";
 import { useTheme } from "@/lib/useTheme";
+
+interface LoginFormData extends Record<string, string> {
+	email: string;
+	password: string;
+}
+
+const validateLoginForm = (values: LoginFormData) => {
+	const errors: Partial<Record<keyof LoginFormData, string>> = {};
+
+	const emailError = validators.email(values.email);
+	if (emailError) errors.email = emailError;
+
+	const passwordError = validators.password(values.password, 6);
+	if (passwordError) errors.password = passwordError;
+
+	return errors;
+};
 
 export function LoginPage() {
 	const navigate = useNavigate();
-	const [emailError, setEmailError] = useState("");
-	const [passwordError, setPasswordError] = useState("");
-	const [formError, setFormError] = useState("");
 	const { theme, toggleTheme } = useTheme();
 
-	const validateEmail = (email: string) => {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-	};
+	const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+		useForm<LoginFormData>({
+			initialValues: { email: "", password: "" },
+			validate: validateLoginForm,
+			onSubmit: async () => {
+				// Simulated login - replace with actual API call
+				navigate({ to: "/dashboard" });
+			},
+		});
 
-	const onSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		setFormError("");
-		setEmailError("");
-		setPasswordError("");
-
-		const emailValue =
-			(e.currentTarget as HTMLFormElement).email?.value.trim() || "";
-		const passwordValue =
-			(e.currentTarget as HTMLFormElement).password?.value.trim() || "";
-
-		if (!emailValue) {
-			setEmailError("Email is required");
-			return;
-		}
-		if (!validateEmail(emailValue)) {
-			setEmailError("Please enter a valid email address");
-			return;
-		}
-		if (!passwordValue) {
-			setPasswordError("Password is required");
-			return;
-		}
-		if (passwordValue.length < 6) {
-			setPasswordError("Password must be at least 6 characters");
-			return;
-		}
-
-		// Simulated login
-		navigate({ to: "/dashboard" });
-	};
+	const showEmailError = touched.email && errors.email;
+	const showPasswordError = touched.password && errors.password;
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
@@ -74,6 +65,11 @@ export function LoginPage() {
 							type="button"
 							onClick={toggleTheme}
 							className="rounded-lg border-2 border-primary/50 p-2 text-muted-foreground hover:border-primary hover:text-foreground"
+							aria-label={
+								theme === "dark"
+									? "Switch to light theme"
+									: "Switch to dark theme"
+							}
 						>
 							{theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
 						</button>
@@ -87,7 +83,7 @@ export function LoginPage() {
 							Enter your email and password to access your dashboard
 						</CardDescription>
 					</CardHeader>
-					<form onSubmit={onSubmit}>
+					<form onSubmit={handleSubmit} noValidate>
 						<CardContent className="space-y-4">
 							<div className="space-y-2">
 								<Label htmlFor="email">Email</Label>
@@ -96,17 +92,25 @@ export function LoginPage() {
 									name="email"
 									type="email"
 									placeholder="m@example.com"
-									required
+									value={values.email}
+									onChange={(e) => handleChange("email")(e.target.value)}
+									onBlur={handleBlur("email")}
+									aria-invalid={Boolean(showEmailError)}
+									aria-describedby={showEmailError ? "email-error" : undefined}
 									className={
-										emailError
+										showEmailError
 											? "border-red-500 focus-visible:ring-red-500"
 											: ""
 									}
 								/>
-								{emailError && (
-									<div className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500">
+								{showEmailError && (
+									<div
+										id="email-error"
+										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+										aria-live="polite"
+									>
 										<AlertCircle size={14} />
-										<span>{emailError}</span>
+										<span>{errors.email}</span>
 									</div>
 								)}
 							</div>
@@ -124,27 +128,31 @@ export function LoginPage() {
 									id="password"
 									name="password"
 									type="password"
-									required
+									value={values.password}
+									onChange={(e) => handleChange("password")(e.target.value)}
+									onBlur={handleBlur("password")}
+									aria-invalid={Boolean(showPasswordError)}
+									aria-describedby={
+										showPasswordError ? "password-error" : undefined
+									}
 									className={
-										passwordError
+										showPasswordError
 											? "border-red-500 focus-visible:ring-red-500"
 											: ""
 									}
 								/>
-								{passwordError && (
-									<div className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500">
+								{showPasswordError && (
+									<div
+										id="password-error"
+										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+										aria-live="polite"
+									>
 										<AlertCircle size={14} />
-										<span>{passwordError}</span>
+										<span>{errors.password}</span>
 									</div>
 								)}
 							</div>
 						</CardContent>
-						{formError && (
-							<div className="mx-4 mb-4 flex items-center gap-2 rounded-md bg-red-50 p-3 text-red-600 text-sm dark:bg-red-900/20">
-								<AlertCircle size={16} />
-								<span>{formError}</span>
-							</div>
-						)}
 						<CardFooter className="flex flex-col">
 							<Button
 								className="w-full border-2 border-primary hover:border-primary/80"
@@ -153,7 +161,7 @@ export function LoginPage() {
 								Log in
 							</Button>
 							<div className="mt-4 text-center text-muted-foreground text-sm">
-								Don't have an account?{" "}
+								Don&apos;t have an account?{" "}
 								<Link
 									to="/register"
 									className="rounded-md border-2 border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"

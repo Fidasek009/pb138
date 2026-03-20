@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -114,9 +114,10 @@ export function SettingsPage() {
 		},
 	];
 
-	const isToolAdded = (toolId: string) => {
-		return usedTools.some((tool) => tool.sourceId === toolId);
-	};
+	const isToolAdded = useCallback(
+		(toolId: string) => usedTools.some((tool) => tool.sourceId === toolId),
+		[usedTools],
+	);
 
 	return (
 		<div className="mx-auto max-w-5xl space-y-6 px-4">

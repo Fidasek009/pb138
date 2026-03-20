@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,62 +11,52 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm, validators } from "@/lib/useForm";
 import { useTheme } from "@/lib/useTheme";
+
+interface RegisterFormData extends Record<string, string> {
+	email: string;
+	password: string;
+}
+
+const validateRegisterForm = (values: RegisterFormData) => {
+	const errors: Partial<Record<keyof RegisterFormData, string>> = {};
+
+	const emailError = validators.email(values.email);
+	if (emailError) errors.email = emailError;
+
+	const password = values.password;
+	if (!password) {
+		errors.password = "Password is required";
+	} else if (password.length < 6) {
+		errors.password = "Password must be at least 6 characters";
+	} else if (!/[A-Z]/.test(password)) {
+		errors.password = "Password must contain at least one uppercase letter";
+	} else if (!/[a-z]/.test(password)) {
+		errors.password = "Password must contain at least one lowercase letter";
+	} else if (!/[0-9]/.test(password)) {
+		errors.password = "Password must contain at least one number";
+	}
+
+	return errors;
+};
 
 export function RegisterPage() {
 	const navigate = useNavigate();
-	const [emailError, setEmailError] = useState("");
-	const [passwordError, setPasswordError] = useState("");
-	const [formError, setFormError] = useState("");
 	const { theme, toggleTheme } = useTheme();
 
-	const validateEmail = (email: string) => {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-	};
+	const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
+		useForm<RegisterFormData>({
+			initialValues: { email: "", password: "" },
+			validate: validateRegisterForm,
+			onSubmit: async () => {
+				// Simulated registration - replace with actual API call
+				navigate({ to: "/dashboard" });
+			},
+		});
 
-	const onSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		setFormError("");
-		setEmailError("");
-		setPasswordError("");
-
-		const emailValue =
-			(e.currentTarget as HTMLFormElement).email?.value.trim() || "";
-		const passwordValue =
-			(e.currentTarget as HTMLFormElement).password?.value.trim() || "";
-
-		if (!emailValue) {
-			setEmailError("Email is required");
-			return;
-		}
-		if (!validateEmail(emailValue)) {
-			setEmailError("Please enter a valid email address");
-			return;
-		}
-		if (!passwordValue) {
-			setPasswordError("Password is required");
-			return;
-		}
-		if (passwordValue.length < 6) {
-			setPasswordError("Password must be at least 6 characters");
-			return;
-		}
-		if (!/[A-Z]/.test(passwordValue)) {
-			setPasswordError("Password must contain at least one uppercase letter");
-			return;
-		}
-		if (!/[a-z]/.test(passwordValue)) {
-			setPasswordError("Password must contain at least one lowercase letter");
-			return;
-		}
-		if (!/[0-9]/.test(passwordValue)) {
-			setPasswordError("Password must contain at least one number");
-			return;
-		}
-
-		// Simulated registration
-		navigate({ to: "/dashboard" });
-	};
+	const showEmailError = touched.email && errors.email;
+	const showPasswordError = touched.password && errors.password;
 
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
@@ -106,7 +95,7 @@ export function RegisterPage() {
 							Enter your email below to create your account
 						</CardDescription>
 					</CardHeader>
-					<form onSubmit={onSubmit}>
+					<form onSubmit={handleSubmit} noValidate>
 						<CardContent className="space-y-4">
 							<div className="space-y-2">
 								<Label htmlFor="email">Email</Label>
@@ -115,22 +104,25 @@ export function RegisterPage() {
 									name="email"
 									type="email"
 									placeholder="m@example.com"
-									required
-									aria-invalid={Boolean(emailError)}
-									aria-describedby={emailError ? "email-error" : undefined}
+									value={values.email}
+									onChange={(e) => handleChange("email")(e.target.value)}
+									onBlur={handleBlur("email")}
+									aria-invalid={Boolean(showEmailError)}
+									aria-describedby={showEmailError ? "email-error" : undefined}
 									className={
-										emailError
+										showEmailError
 											? "border-red-500 focus-visible:ring-red-500"
 											: ""
 									}
 								/>
-								{emailError && (
+								{showEmailError && (
 									<div
 										id="email-error"
 										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+										aria-live="polite"
 									>
 										<AlertCircle size={14} />
-										<span>{emailError}</span>
+										<span>{errors.email}</span>
 									</div>
 								)}
 							</div>
@@ -140,34 +132,31 @@ export function RegisterPage() {
 									id="password"
 									name="password"
 									type="password"
-									required
-									aria-invalid={Boolean(passwordError)}
+									value={values.password}
+									onChange={(e) => handleChange("password")(e.target.value)}
+									onBlur={handleBlur("password")}
+									aria-invalid={Boolean(showPasswordError)}
 									aria-describedby={
-										passwordError ? "password-error" : undefined
+										showPasswordError ? "password-error" : undefined
 									}
 									className={
-										passwordError
+										showPasswordError
 											? "border-red-500 focus-visible:ring-red-500"
 											: ""
 									}
 								/>
-								{passwordError && (
+								{showPasswordError && (
 									<div
 										id="password-error"
 										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+										aria-live="polite"
 									>
 										<AlertCircle size={14} />
-										<span>{passwordError}</span>
+										<span>{errors.password}</span>
 									</div>
 								)}
 							</div>
 						</CardContent>
-						{formError && (
-							<div className="mx-4 mb-4 flex items-center gap-2 rounded-md bg-red-50 p-3 text-red-600 text-sm dark:bg-red-900/20">
-								<AlertCircle size={16} />
-								<span>{formError}</span>
-							</div>
-						)}
 						<CardFooter className="flex flex-col">
 							<Button className="w-full" type="submit">
 								Create account

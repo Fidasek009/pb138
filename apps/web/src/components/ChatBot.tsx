@@ -45,7 +45,7 @@ export function ChatBot() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [showRating, setShowRating] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
-	const responseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const responseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	// Detect theme from document
 	useEffect(() => {

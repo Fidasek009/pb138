@@ -18,7 +18,7 @@
 			"recommended": true,
 			"nursery": {
 				"useSortedClasses": {
-					"level": "warn",
+					"level": "off",
 					"options": {
 						"functions": ["cn", "clsx", "twMerge"]
 					}

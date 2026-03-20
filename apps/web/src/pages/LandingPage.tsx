@@ -9,7 +9,7 @@ export function LandingPage() {
 
 	return (
 		<div className="flex min-h-screen flex-col bg-background">
-			<header className="flex h-16 items-center border-border border-b px-6">
+			<header className="sticky top-0 z-50 flex h-16 items-center border-border border-b bg-background px-6">
 				<div className="flex flex-1 items-center gap-2">
 					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
 						<Bot size={20} />
@@ -70,7 +70,7 @@ export function LandingPage() {
 					<div className="container mx-auto px-6">
 						<div className="grid gap-12 sm:grid-cols-3">
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/20 text-blue-700 dark:bg-blue-500/40 dark:text-blue-300">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500 text-white dark:bg-blue-600">
 									<Zap size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">
@@ -82,7 +82,7 @@ export function LandingPage() {
 								</p>
 							</div>
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20 text-green-700 dark:bg-green-500/40 dark:text-green-300">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500 text-white dark:bg-green-600">
 									<Shield size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">
@@ -94,7 +94,7 @@ export function LandingPage() {
 								</p>
 							</div>
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/20 text-purple-700 dark:bg-purple-500/40 dark:text-purple-300">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500 text-white dark:bg-purple-600">
 									<MessageSquare size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">

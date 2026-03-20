@@ -176,7 +176,7 @@ export function RegisterPage() {
 								Already have an account?{" "}
 								<Link
 									to="/login"
-									className="font-medium text-zinc-900 underline underline-offset-4 hover:text-foreground"
+									className="rounded-md border-2 border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"
 								>
 									Log in
 								</Link>

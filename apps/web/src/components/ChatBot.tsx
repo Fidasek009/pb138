@@ -2,7 +2,9 @@ import {
 	Bot,
 	Maximize2,
 	Minimize2,
+	Moon,
 	Send,
+	Sun,
 	ThumbsDown,
 	ThumbsUp,
 	Trash2,
@@ -25,6 +27,7 @@ const STORAGE_KEY = "chatbot_messages";
 export function ChatBot() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isExpanded, setIsExpanded] = useState(false);
+	const [theme, setTheme] = useState<"light" | "dark">("light");
 	const [messages, setMessages] = useState<Message[]>(() => {
 		const saved = localStorage.getItem(STORAGE_KEY);
 		if (saved) {
@@ -42,6 +45,28 @@ export function ChatBot() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [showRating, setShowRating] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+
+	// Detect theme from document
+	useEffect(() => {
+		const detectTheme = () => {
+			const isDark = document.documentElement.classList.contains("dark");
+			setTheme(isDark ? "dark" : "light");
+		};
+
+		detectTheme();
+
+		const observer = new MutationObserver(detectTheme);
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["class"],
+		});
+
+		return () => observer.disconnect();
+	}, []);
+
+	const toggleChatTheme = () => {
+		setTheme((prev) => (prev === "light" ? "dark" : "light"));
+	};
 
 	// Persist messages to localStorage whenever they change
 	useEffect(() => {
@@ -113,6 +138,8 @@ export function ChatBot() {
 		setShowRating(false);
 	};
 
+	const isDark = theme === "dark";
+
 	return (
 		<div className="fixed right-6 bottom-6 z-50 flex flex-col items-end">
 			<AnimatePresence>
@@ -122,20 +149,31 @@ export function ChatBot() {
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.95, y: 20 }}
 						transition={{ duration: 0.2 }}
-						className={`mb-4 flex flex-col overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-zinc-200 dark:bg-zinc-950 dark:ring-zinc-800 ${
+						data-theme={theme}
+						className={`mb-4 flex flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 ${
+							isDark ? "bg-zinc-950 ring-zinc-800" : "bg-white ring-zinc-200"
+						} ${
 							isExpanded
 								? "h-[80vh] w-[90vw] md:w-[600px]"
 								: "h-[500px] w-[350px]"
 						}`}
 					>
 						{/* Header */}
-						<div className="flex items-center justify-between border-zinc-100 border-b bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900">
+						<div
+							className={`flex items-center justify-between border-b px-4 py-3 ${
+								isDark
+									? "border-zinc-800 bg-zinc-900"
+									: "border-zinc-100 bg-zinc-50"
+							}`}
+						>
 							<div className="flex items-center gap-2">
 								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#16a34a] text-white">
 									<Bot size={18} />
 								</div>
 								<div>
-									<h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-50">
+									<h3
+										className={`font-semibold text-sm ${isDark ? "text-zinc-50" : "text-zinc-900"}`}
+									>
 										Support Assistant
 									</h3>
 									<p className="text-green-600 text-xs dark:text-green-500">
@@ -143,11 +181,21 @@ export function ChatBot() {
 									</p>
 								</div>
 							</div>
-							<div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
+							<div
+								className={`flex items-center gap-1 ${isDark ? "text-zinc-400" : "text-zinc-500"}`}
+							>
+								<button
+									type="button"
+									onClick={toggleChatTheme}
+									className={`rounded-md p-1.5 ${isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
+									title={isDark ? "Switch to light" : "Switch to dark"}
+								>
+									{isDark ? <Sun size={16} /> : <Moon size={16} />}
+								</button>
 								<button
 									type="button"
 									onClick={clearChat}
-									className="rounded-md p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+									className={`rounded-md p-1.5 ${isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
 									title="Clear Chat"
 								>
 									<Trash2 size={16} />
@@ -155,7 +203,7 @@ export function ChatBot() {
 								<button
 									type="button"
 									onClick={() => setIsExpanded(!isExpanded)}
-									className="hidden rounded-md p-1.5 hover:bg-zinc-200 md:block dark:hover:bg-zinc-800"
+									className={`hidden rounded-md p-1.5 md:block ${isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
 									title={isExpanded ? "Minimize" : "Expand"}
 								>
 									{isExpanded ? (
@@ -167,7 +215,7 @@ export function ChatBot() {
 								<button
 									type="button"
 									onClick={() => setIsOpen(false)}
-									className="rounded-md p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+									className={`rounded-md p-1.5 ${isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
 									title="Close"
 								>
 									<X size={16} />
@@ -176,7 +224,9 @@ export function ChatBot() {
 						</div>
 
 						{/* Chat Area */}
-						<div className="flex-1 overflow-y-auto bg-white p-4 dark:bg-zinc-950">
+						<div
+							className={`flex-1 overflow-y-auto p-4 ${isDark ? "bg-zinc-950" : "bg-white"}`}
+						>
 							<div className="space-y-4">
 								{messages.map((msg) => (
 									<div
@@ -187,7 +237,9 @@ export function ChatBot() {
 											className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm ${
 												msg.role === "user"
 													? "bg-primary text-primary-foreground"
-													: "bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50"
+													: isDark
+														? "bg-zinc-900 text-zinc-50"
+														: "bg-zinc-100 text-zinc-900"
 											}`}
 										>
 											{msg.content}
@@ -196,7 +248,9 @@ export function ChatBot() {
 								))}
 								{isTyping && (
 									<div className="flex justify-start">
-										<div className="flex max-w-[85%] gap-1 rounded-2xl bg-zinc-100 px-4 py-3 text-sm dark:bg-zinc-900">
+										<div
+											className={`flex max-w-[85%] gap-1 rounded-2xl px-4 py-3 text-sm ${isDark ? "bg-zinc-900" : "bg-zinc-100"}`}
+										>
 											<motion.div
 												animate={{ y: [0, -5, 0] }}
 												transition={{
@@ -229,19 +283,25 @@ export function ChatBot() {
 								)}
 								{showRating && !isTyping && (
 									<div className="mt-4 flex justify-center">
-										<div className="flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-xs text-zinc-500 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+										<div
+											className={`flex items-center gap-2 rounded-full border px-4 py-2 text-xs shadow-sm ${
+												isDark
+													? "border-zinc-800 bg-zinc-900 text-zinc-500"
+													: "border-zinc-200 bg-zinc-50 text-zinc-500"
+											}`}
+										>
 											<span>Was this helpful?</span>
 											<button
 												type="button"
 												onClick={() => handleRating("up")}
-												className="rounded p-1 hover:bg-green-100 hover:text-green-600 dark:hover:bg-green-900/30"
+												className={`rounded p-1 ${isDark ? "hover:bg-green-900/30 hover:text-green-600" : "hover:bg-green-100 hover:text-green-600"}`}
 											>
 												<ThumbsUp size={14} />
 											</button>
 											<button
 												type="button"
 												onClick={() => handleRating("down")}
-												className="rounded p-1 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30"
+												className={`rounded p-1 ${isDark ? "hover:bg-red-900/30 hover:text-red-600" : "hover:bg-red-100 hover:text-red-600"}`}
 											>
 												<ThumbsDown size={14} />
 											</button>
@@ -253,14 +313,24 @@ export function ChatBot() {
 						</div>
 
 						{/* Input Area */}
-						<div className="border-zinc-100 border-t bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
+						<div
+							className={`border-t p-4 ${
+								isDark
+									? "border-zinc-800 bg-zinc-950"
+									: "border-zinc-100 bg-white"
+							}`}
+						>
 							<div className="relative">
 								<Input
 									value={inputValue}
 									onChange={(e) => setInputValue(e.target.value)}
 									onKeyDown={handleKeyDown}
 									placeholder="Type your message..."
-									className="rounded-full border-zinc-200 bg-zinc-50 pr-10 focus-visible:ring-1 dark:border-zinc-800 dark:bg-zinc-900"
+									className={`rounded-full pr-10 focus-visible:ring-1 ${
+										isDark
+											? "border-zinc-800 bg-zinc-800 text-white placeholder:text-zinc-500"
+											: "border-zinc-200 bg-zinc-50 text-zinc-900 placeholder:text-zinc-500"
+									}`}
 								/>
 								<Button
 									size="icon"

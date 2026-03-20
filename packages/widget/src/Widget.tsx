@@ -108,11 +108,23 @@ export const Widget = (_props: WidgetProps) => {
 								<div
 									className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
 										isDark
-											? "bg-zinc-900 text-zinc-50"
+											? "bg-zinc-800 text-zinc-50"
 											: "bg-zinc-100 text-zinc-900"
 									}`}
 								>
 									Hi! How can I help you today?
+								</div>
+							</div>
+							{/* User message example */}
+							<div className="flex justify-end">
+								<div
+									className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
+										isDark
+											? "bg-green-700 text-white"
+											: "bg-green-600 text-white"
+									}`}
+								>
+									I have a question about pricing.
 								</div>
 							</div>
 						</div>
@@ -132,7 +144,7 @@ export const Widget = (_props: WidgetProps) => {
 								placeholder="Type your message..."
 								className={`w-full px-4 py-2 pr-10 rounded-full text-sm border focus:outline-none focus:ring-2 focus:ring-green-500 ${
 									isDark
-										? "bg-zinc-900 border-zinc-800 text-zinc-50 placeholder-zinc-500"
+										? "bg-zinc-800 border-zinc-700 text-white placeholder-zinc-400"
 										: "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400"
 								}`}
 							/>

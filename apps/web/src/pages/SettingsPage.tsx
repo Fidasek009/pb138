@@ -169,7 +169,7 @@ export function SettingsPage() {
 									Use this key to authenticate API requests.
 								</p>
 							</div>
-							<hr className="border-border" />
+							<hr className="border-border my-4 border-t-2" />
 							<div className="space-y-2">
 								<Label htmlFor="current-password">Current Password</Label>
 								<Input id="current-password" type="password" />

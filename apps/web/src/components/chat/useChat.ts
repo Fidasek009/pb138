@@ -54,13 +54,11 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 	const responseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	// Persist messages to localStorage and show rating after 3 messages
-	// biome-ignore lint/correctness/useExhaustiveDependencies: setShowRating is stable, intentionally run on messages change
 	useEffect(() => {
 		saveMessages(messages);
 		if (messages.length > 3 && !isTyping) {
 			setShowRating(true);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [messages, isTyping]);
 
 	// Cleanup timeout on unmount

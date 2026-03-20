@@ -45,6 +45,7 @@ export function ChatBot() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [showRating, setShowRating] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const responseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Detect theme from document
 	useEffect(() => {
@@ -99,7 +100,7 @@ export function ChatBot() {
 		setIsTyping(true);
 
 		// Simulate bot response
-		setTimeout(() => {
+		responseTimeoutRef.current = setTimeout(() => {
 			const botMsg: Message = {
 				id: (Date.now() + 1).toString(),
 				role: "bot",
@@ -113,6 +114,15 @@ export function ChatBot() {
 			setIsTyping(false);
 		}, 1500);
 	};
+
+	// Cleanup timeout on unmount
+	useEffect(() => {
+		return () => {
+			if (responseTimeoutRef.current) {
+				clearTimeout(responseTimeoutRef.current);
+			}
+		};
+	}, []);
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter") handleSend();
@@ -189,6 +199,9 @@ export function ChatBot() {
 									onClick={toggleChatTheme}
 									className={`rounded-md p-1.5 ${isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
 									title={isDark ? "Switch to light" : "Switch to dark"}
+									aria-label={
+										isDark ? "Switch to light theme" : "Switch to dark theme"
+									}
 								>
 									{isDark ? <Sun size={16} /> : <Moon size={16} />}
 								</button>
@@ -354,6 +367,7 @@ export function ChatBot() {
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={() => setIsOpen(!isOpen)}
+				aria-label={isOpen ? "Close chat" : "Open chat"}
 				className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-[#16a34a] text-white shadow-xl hover:bg-[#16a34a]/90 focus:outline-none focus:ring-4 focus:ring-[#16a34a]/50 focus:ring-offset-2 dark:border-zinc-800"
 			>
 				{isOpen ? <X size={24} /> : <Bot size={28} />}

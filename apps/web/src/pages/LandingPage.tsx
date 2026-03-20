@@ -21,6 +21,11 @@ export function LandingPage() {
 						type="button"
 						onClick={toggleTheme}
 						className="text-muted-foreground hover:text-foreground"
+						aria-label={
+							theme === "dark"
+								? "Switch to light theme"
+								: "Switch to dark theme"
+						}
 					>
 						{theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
 					</button>

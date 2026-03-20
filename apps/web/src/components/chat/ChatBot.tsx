@@ -15,7 +15,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { BRAND_COLORS } from "@/lib/colors";
 import { useChat } from "./useChat";
 import { useSyncedTheme } from "./useSyncedTheme";
 
@@ -94,10 +93,7 @@ export function ChatBot() {
 							}`}
 						>
 							<div className="flex items-center gap-2">
-								<div
-									className="flex h-8 w-8 items-center justify-center rounded-full text-white"
-									style={{ backgroundColor: BRAND_COLORS.primary }}
-								>
+								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
 									<Bot size={18} />
 								</div>
 								<div>
@@ -336,11 +332,7 @@ function FAB({ isOpen, isDark, onClick }: FABProps) {
 			whileTap={{ scale: 0.95 }}
 			onClick={onClick}
 			aria-label={isOpen ? "Close chat" : "Open chat"}
-			className="flex h-14 w-14 items-center justify-center rounded-full border-2 text-white shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-offset-2"
-			style={{
-				backgroundColor: BRAND_COLORS.primary,
-				borderColor: isDark ? "transparent" : "white",
-			}}
+			className={`flex h-14 w-14 items-center justify-center rounded-full border-2 bg-primary text-white shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-offset-2 ${isDark ? "border-transparent" : "border-white"}`}
 		>
 			{isOpen ? <X size={24} /> : <Bot size={28} />}
 		</motion.button>

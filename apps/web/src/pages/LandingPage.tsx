@@ -70,7 +70,7 @@ export function LandingPage() {
 					<div className="container mx-auto px-6">
 						<div className="grid gap-12 sm:grid-cols-3">
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/20 text-blue-700 dark:bg-blue-500/40 dark:text-blue-300">
 									<Zap size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">
@@ -82,7 +82,7 @@ export function LandingPage() {
 								</p>
 							</div>
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20 text-green-700 dark:bg-green-500/40 dark:text-green-300">
 									<Shield size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">
@@ -94,7 +94,7 @@ export function LandingPage() {
 								</p>
 							</div>
 							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/20 text-purple-700 dark:bg-purple-500/40 dark:text-purple-300">
 									<MessageSquare size={24} />
 								</div>
 								<h3 className="mb-2 font-semibold text-foreground text-xl">

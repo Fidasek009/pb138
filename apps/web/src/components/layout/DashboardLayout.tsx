@@ -28,7 +28,7 @@ export function DashboardLayout() {
 	return (
 		<div className="flex min-h-screen bg-background">
 			{/* Sidebar */}
-			<aside className="w-64 border-border border-r bg-card">
+			<aside className="relative flex w-64 flex-col border-border border-r bg-card">
 				<div className="flex h-16 items-center gap-2 border-border border-b px-6">
 					<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
 						<Bot size={20} />
@@ -59,7 +59,7 @@ export function DashboardLayout() {
 					})}
 				</div>
 
-				<div className="absolute bottom-0 w-64 border-border border-t bg-card p-4">
+				<div className="mt-auto border-border border-t bg-card p-4">
 					<Button
 						variant="ghost"
 						size="sm"

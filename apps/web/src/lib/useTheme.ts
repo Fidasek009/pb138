@@ -4,10 +4,9 @@ export type Theme = "light" | "dark";
 
 export function useTheme() {
 	const [theme, setTheme] = useState<Theme>(() => {
-		if (typeof window !== "undefined") {
-			return (localStorage.getItem("theme") as Theme) || "light";
-		}
-		return "light";
+		if (typeof window === "undefined") return "light";
+		const stored = localStorage.getItem("theme");
+		return stored === "light" || stored === "dark" ? stored : "light";
 	});
 
 	useEffect(() => {

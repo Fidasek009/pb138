@@ -22,10 +22,36 @@ export function SettingsPage() {
 		startX: number;
 		startY: number;
 	} | null>(null);
-	const [usedTools, setUsedTools] = useState([
-		{ id: "1", name: "Product Database", color: "blue", icon: "DB" },
-		{ id: "2", name: "Custom Knowledge Base", color: "green", icon: "JSON" },
-		{ id: "3", name: "Internet Search", color: "purple", icon: "WEB" },
+	const [usedTools, setUsedTools] = useState<
+		Array<{
+			id: string;
+			sourceId: string;
+			name: string;
+			color: string;
+			icon: string;
+		}>
+	>([
+		{
+			id: "1",
+			sourceId: "1",
+			name: "Product Database",
+			color: "blue",
+			icon: "DB",
+		},
+		{
+			id: "2",
+			sourceId: "2",
+			name: "Custom Knowledge Base",
+			color: "green",
+			icon: "JSON",
+		},
+		{
+			id: "3",
+			sourceId: "3",
+			name: "Internet Search",
+			color: "purple",
+			icon: "WEB",
+		},
 	]);
 
 	const handleAddTool = (
@@ -51,7 +77,7 @@ export function SettingsPage() {
 		setTimeout(() => {
 			setUsedTools((prev) => [
 				...prev,
-				{ ...tool, id: `${tool.id}-${Date.now()}` },
+				{ ...tool, sourceId: tool.id, id: crypto.randomUUID() },
 			]);
 			setMovingTool(null);
 		}, 1000);
@@ -89,7 +115,7 @@ export function SettingsPage() {
 	];
 
 	const isToolAdded = (toolId: string) => {
-		return usedTools.some((tool) => tool.id.startsWith(toolId));
+		return usedTools.some((tool) => tool.sourceId === toolId);
 	};
 
 	return (
@@ -143,6 +169,7 @@ export function SettingsPage() {
 									Use this key to authenticate API requests.
 								</p>
 							</div>
+							<hr className="border-border" />
 							<div className="space-y-2">
 								<Label htmlFor="current-password">Current Password</Label>
 								<Input id="current-password" type="password" />
@@ -158,7 +185,7 @@ export function SettingsPage() {
 						</CardContent>
 						<CardFooter className="flex justify-end">
 							<Button className="border-2 border-primary text-primary-foreground hover:border-primary/80">
-								Save Changes
+								Change Password
 							</Button>
 						</CardFooter>
 					</Card>

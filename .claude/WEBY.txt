@@ -1,0 +1,6 @@
+Higher contrast for bottom icons at LandingPage, currently they are badly visible.
+Into Account settings add divider between password reset and the rest, change the button from Save Changes to change password.
+Currently the resolution of the Tools (MCP) page is changed because of the scrollbar that appears, because the site is too long. Make it so that the text doesn't move, when going to this page, because of the additional scroll bar (web scroll bar)-
+Users text in widget is not readable when Dark mode is on, fix it. Widget should change Dark/Light mode automatically, inherit it from the rest of the page/system.
+Check if there are any more troublesome texts that are not visible in different Dark/Light mode.
+Make colors in some style file (or whatever the standart is), I don't want to change the color in each component individually.

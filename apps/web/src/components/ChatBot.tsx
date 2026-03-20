@@ -9,7 +9,7 @@ import {
 	X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,10 +43,6 @@ export function ChatBot() {
 	const [showRating, setShowRating] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
-	const scrollToBottom = useCallback(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, []);
-
 	// Persist messages to localStorage whenever they change
 	useEffect(() => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
@@ -59,9 +55,11 @@ export function ChatBot() {
 		}
 	}, [showRating]);
 
+	// Auto-scroll to bottom when messages change
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally scroll on messages change
 	useEffect(() => {
-		scrollToBottom();
-	}, [scrollToBottom]);
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
 
 	const handleSend = () => {
 		if (!inputValue.trim()) return;
@@ -83,9 +81,11 @@ export function ChatBot() {
 				content:
 					"That's a great question! I'm an AI assistant built to help you navigate our platform and find answers quickly.",
 			};
-			setMessages((prev) => [...prev, botMsg]);
-			setIsTyping(true);
-			if (messages.length > 3) setShowRating(true);
+			setMessages((prev) => {
+				if (prev.length > 3) setShowRating(true);
+				return [...prev, botMsg];
+			});
+			setIsTyping(false);
 		}, 1500);
 	};
 

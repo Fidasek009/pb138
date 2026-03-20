@@ -85,6 +85,11 @@ export function RegisterPage() {
 						<button
 							type="button"
 							onClick={toggleTheme}
+							aria-label={
+								theme === "dark"
+									? "Switch to light theme"
+									: "Switch to dark theme"
+							}
 							className="rounded-lg border-2 border-primary/50 p-2 text-muted-foreground hover:border-primary hover:text-foreground"
 						>
 							{theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
@@ -111,6 +116,8 @@ export function RegisterPage() {
 									type="email"
 									placeholder="m@example.com"
 									required
+									aria-invalid={Boolean(emailError)}
+									aria-describedby={emailError ? "email-error" : undefined}
 									className={
 										emailError
 											? "border-red-500 focus-visible:ring-red-500"
@@ -118,7 +125,10 @@ export function RegisterPage() {
 									}
 								/>
 								{emailError && (
-									<div className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500">
+									<div
+										id="email-error"
+										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+									>
 										<AlertCircle size={14} />
 										<span>{emailError}</span>
 									</div>
@@ -131,6 +141,10 @@ export function RegisterPage() {
 									name="password"
 									type="password"
 									required
+									aria-invalid={Boolean(passwordError)}
+									aria-describedby={
+										passwordError ? "password-error" : undefined
+									}
 									className={
 										passwordError
 											? "border-red-500 focus-visible:ring-red-500"
@@ -138,7 +152,10 @@ export function RegisterPage() {
 									}
 								/>
 								{passwordError && (
-									<div className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500">
+									<div
+										id="password-error"
+										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
+									>
 										<AlertCircle size={14} />
 										<span>{passwordError}</span>
 									</div>

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
+import { AuthFormField, AuthHeader } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -9,10 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "@/lib/useForm";
-import { useTheme } from "@/lib/useTheme";
 import { loginSchema } from "@/schemas";
 
 interface LoginFormData extends Record<string, string> {
@@ -34,7 +31,6 @@ const validateLoginForm = (values: LoginFormData) => {
 
 export function LoginPage() {
 	const navigate = useNavigate();
-	const { theme, toggleTheme } = useTheme();
 
 	const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
 		useForm<LoginFormData>({
@@ -46,36 +42,10 @@ export function LoginPage() {
 			},
 		});
 
-	const showEmailError = touched.email && errors.email;
-	const showPasswordError = touched.password && errors.password;
-
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
 			<div className="w-full max-w-sm">
-				<div className="mb-8 flex flex-col items-center">
-					<div className="mb-6 flex w-full items-center justify-between rounded-lg border-2 border-primary/30 p-4">
-						<Link to="/" className="flex items-center gap-2">
-							<div className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-primary bg-primary text-primary-foreground">
-								<Bot size={24} />
-							</div>
-							<span className="font-bold text-card-foreground text-xl">
-								PagePal
-							</span>
-						</Link>
-						<button
-							type="button"
-							onClick={toggleTheme}
-							className="rounded-lg border-2 border-primary/50 p-2 text-muted-foreground hover:border-primary hover:text-foreground"
-							aria-label={
-								theme === "dark"
-									? "Switch to light theme"
-									: "Switch to dark theme"
-							}
-						>
-							{theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-						</button>
-					</div>
-				</div>
+				<AuthHeader />
 
 				<Card>
 					<CardHeader className="space-y-1">
@@ -86,38 +56,28 @@ export function LoginPage() {
 					</CardHeader>
 					<form onSubmit={handleSubmit} noValidate>
 						<CardContent className="space-y-4">
-							<div className="space-y-2">
-								<Label htmlFor="email">Email</Label>
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									placeholder="m@example.com"
-									value={values.email}
-									onChange={(e) => handleChange("email")(e.target.value)}
-									onBlur={handleBlur("email")}
-									aria-invalid={Boolean(showEmailError)}
-									aria-describedby={showEmailError ? "email-error" : undefined}
-									className={
-										showEmailError
-											? "border-red-500 focus-visible:ring-red-500"
-											: ""
-									}
-								/>
-								{showEmailError && (
-									<div
-										id="email-error"
-										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
-										aria-live="polite"
-									>
-										<AlertCircle size={14} />
-										<span>{errors.email}</span>
-									</div>
-								)}
-							</div>
+							<AuthFormField
+								id="email"
+								name="email"
+								label="Email"
+								type="email"
+								placeholder="m@example.com"
+								value={values.email}
+								onChange={handleChange("email")}
+								onBlur={handleBlur("email")}
+								error={errors.email}
+								showError={touched.email && !!errors.email}
+								errorId="email-error"
+								autoComplete="email"
+							/>
 							<div className="space-y-2">
 								<div className="flex items-center justify-between">
-									<Label htmlFor="password">Password</Label>
+									<label
+										htmlFor="password"
+										className="font-medium text-sm leading-none"
+									>
+										Password
+									</label>
 									<button
 										type="button"
 										className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
@@ -125,33 +85,19 @@ export function LoginPage() {
 										Forgot password?
 									</button>
 								</div>
-								<Input
+								<AuthFormField
 									id="password"
 									name="password"
+									label=""
 									type="password"
 									value={values.password}
-									onChange={(e) => handleChange("password")(e.target.value)}
+									onChange={handleChange("password")}
 									onBlur={handleBlur("password")}
-									aria-invalid={Boolean(showPasswordError)}
-									aria-describedby={
-										showPasswordError ? "password-error" : undefined
-									}
-									className={
-										showPasswordError
-											? "border-red-500 focus-visible:ring-red-500"
-											: ""
-									}
+									error={errors.password}
+									showError={touched.password && !!errors.password}
+									errorId="password-error"
+									autoComplete="current-password"
 								/>
-								{showPasswordError && (
-									<div
-										id="password-error"
-										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
-										aria-live="polite"
-									>
-										<AlertCircle size={14} />
-										<span>{errors.password}</span>
-									</div>
-								)}
 							</div>
 						</CardContent>
 						<CardFooter className="flex flex-col">

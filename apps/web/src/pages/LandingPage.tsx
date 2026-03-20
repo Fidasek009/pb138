@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Bot, MessageSquare, Moon, Shield, Sun, Zap } from "lucide-react";
-
+import { Bot, Moon, Sun } from "lucide-react";
+import { FeatureCard } from "@/components/landing";
 import { Button } from "@/components/ui/button";
+import { FEATURES } from "@/data/landing";
 import { useTheme } from "@/lib/useTheme";
 
 export function LandingPage() {
@@ -74,42 +75,9 @@ export function LandingPage() {
 				<section className="bg-muted py-24">
 					<div className="container mx-auto px-6">
 						<div className="grid gap-12 sm:grid-cols-3">
-							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500 text-white dark:bg-blue-600">
-									<Zap size={24} />
-								</div>
-								<h3 className="mb-2 font-semibold text-foreground text-xl">
-									Lightning Fast
-								</h3>
-								<p className="text-muted-foreground">
-									Instant responses powered by advanced AI models. Keep your
-									users engaged without waiting.
-								</p>
-							</div>
-							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500 text-white dark:bg-green-600">
-									<Shield size={24} />
-								</div>
-								<h3 className="mb-2 font-semibold text-foreground text-xl">
-									Customizable Context
-								</h3>
-								<p className="text-muted-foreground">
-									Connect MCP sources, define custom rules, and restrict
-									terminology to suit your brand.
-								</p>
-							</div>
-							<div className="flex flex-col items-center text-center">
-								<div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500 text-white dark:bg-purple-600">
-									<MessageSquare size={24} />
-								</div>
-								<h3 className="mb-2 font-semibold text-foreground text-xl">
-									Embed Anywhere
-								</h3>
-								<p className="text-muted-foreground">
-									Simple React and JS embed codes. Get your widget up and
-									running in minutes.
-								</p>
-							</div>
+							{FEATURES.map((feature) => (
+								<FeatureCard key={feature.id} feature={feature} />
+							))}
 						</div>
 					</div>
 				</section>

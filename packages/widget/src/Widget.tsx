@@ -7,8 +7,6 @@ export interface WidgetProps {
 	className?: string;
 }
 
-const BRAND_COLOR = "#16a34a";
-
 export function Widget(_props: WidgetProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { theme, isDark } = useWidgetTheme();
@@ -23,23 +21,16 @@ export function Widget(_props: WidgetProps) {
 		>
 			{isOpen && (
 				<div
-					className={`
-						mb-3 w-80 rounded-2xl shadow-2xl overflow-hidden border
-						${isDark ? "bg-zinc-950 border-zinc-800" : "bg-white border-zinc-200"}
+					className={`mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl border${isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"}
 					`}
 				>
 					{/* Header */}
 					<header
-						className={`
-							px-4 py-3 border-b
-							${isDark ? "bg-zinc-900 border-zinc-800" : "bg-zinc-50 border-zinc-100"}
+						className={`px-4 py-3 border-b${isDark ? "border-zinc-800 bg-zinc-900" : "border-zinc-100 bg-zinc-50"}
 						`}
 					>
 						<div className="flex items-center gap-3">
-							<div
-								className="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
-								style={{ backgroundColor: BRAND_COLOR }}
-							>
+							<div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 font-semibold text-white">
 								AI
 							</div>
 							<div className="flex-1">
@@ -50,14 +41,14 @@ export function Widget(_props: WidgetProps) {
 								>
 									Support Assistant
 								</h3>
-								<p className="text-green-600 dark:text-green-500 text-xs">
+								<p className="text-green-600 text-xs dark:text-green-500">
 									Online
 								</p>
 							</div>
 							<button
 								type="button"
 								onClick={() => setIsOpen(false)}
-								className={`text-lg leading-none px-2 py-1 rounded ${
+								className={`rounded px-2 py-1 text-lg leading-none ${
 									isDark
 										? "text-zinc-400 hover:bg-zinc-800"
 										: "text-zinc-500 hover:bg-zinc-200"
@@ -71,7 +62,7 @@ export function Widget(_props: WidgetProps) {
 
 					{/* Chat Area */}
 					<div
-						className={`h-64 p-4 overflow-y-auto ${
+						className={`h-64 overflow-y-auto p-4 ${
 							isDark ? "bg-zinc-950" : "bg-white"
 						}`}
 					>
@@ -105,10 +96,10 @@ export function Widget(_props: WidgetProps) {
 
 					{/* Input Area */}
 					<div
-						className={`p-4 border-t ${
+						className={`border-t p-4 ${
 							isDark
-								? "bg-zinc-950 border-zinc-800"
-								: "bg-white border-zinc-100"
+								? "border-zinc-800 bg-zinc-950"
+								: "border-zinc-100 bg-white"
 						}`}
 					>
 						<div className="relative">
@@ -116,23 +107,22 @@ export function Widget(_props: WidgetProps) {
 								type="text"
 								placeholder="Type your message..."
 								aria-label="Type your message"
-								className={`w-full px-4 py-2 pr-10 rounded-full text-sm border focus:outline-none focus:ring-2 focus:ring-green-500 ${
+								className={`w-full rounded-full border px-4 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 ${
 									isDark
-										? "bg-zinc-800 border-zinc-700 text-white placeholder-zinc-400"
-										: "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400"
+										? "border-zinc-700 bg-zinc-800 text-white placeholder-zinc-400"
+										: "border-zinc-200 bg-zinc-50 text-zinc-900 placeholder-zinc-400"
 								}`}
 							/>
 							<button
 								type="button"
-								className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center"
-								style={{ color: BRAND_COLOR }}
+								className="absolute top-1/2 right-1 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-green-600"
 								aria-label="Send message"
 							>
 								<SendIcon size={16} />
 							</button>
 						</div>
 						<p
-							className={`text-center text-[10px] mt-2 ${
+							className={`mt-2 text-center text-[10px] ${
 								isDark ? "text-zinc-500" : "text-zinc-400"
 							}`}
 						>
@@ -146,12 +136,8 @@ export function Widget(_props: WidgetProps) {
 			<button
 				type="button"
 				onClick={() => setIsOpen((prev) => !prev)}
-				className={`
-					w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl
-					transition-transform hover:scale-105 active:scale-95
-					${isOpen ? "" : "animate-pulse"}
+				className={`flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white shadow-xl transition-transform hover:scale-105 active:scale-95${isOpen ? "" : "animate-pulse"}
 				`}
-				style={{ backgroundColor: BRAND_COLOR }}
 				aria-label={isOpen ? "Close chat" : "Open chat"}
 			>
 				{isOpen ? <span className="text-2xl">×</span> : <BotIcon size={28} />}

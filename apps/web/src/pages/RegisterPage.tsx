@@ -1,6 +1,6 @@
+import { Link, useNavigate } from "@tanstack/react-router";
 import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -66,7 +66,7 @@ export function RegisterPage() {
 		}
 
 		// Simulated registration
-		navigate("/dashboard");
+		navigate({ to: "/dashboard" });
 	};
 
 	return (

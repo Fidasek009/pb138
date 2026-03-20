@@ -1,5 +1,5 @@
+import { Link } from "@tanstack/react-router";
 import { Bot, MessageSquare, Moon, Shield, Sun, Zap } from "lucide-react";
-import { Link } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/lib/useTheme";

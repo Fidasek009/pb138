@@ -1,6 +1,6 @@
+import { Link, useNavigate } from "@tanstack/react-router";
 import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -54,7 +54,7 @@ export function LoginPage() {
 		}
 
 		// Simulated login
-		navigate("/dashboard");
+		navigate({ to: "/dashboard" });
 	};
 
 	return (
@@ -113,12 +113,12 @@ export function LoginPage() {
 							<div className="space-y-2">
 								<div className="flex items-center justify-between">
 									<Label htmlFor="password">Password</Label>
-									<Link
-										to="/forgot-password"
+									<button
+										type="button"
 										className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
 									>
 										Forgot password?
-									</Link>
+									</button>
 								</div>
 								<Input
 									id="password"

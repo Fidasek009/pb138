@@ -15,7 +15,7 @@ interface UseFormReturn<T> {
 	errors: FormErrors<T>;
 	touched: FormTouched<T>;
 	isSubmitting: boolean;
-	handleChange: (field: keyof T) => (value: string) => void;
+	handleChange: (field: keyof T) => (value: T[keyof T]) => void;
 	handleBlur: (field: keyof T) => () => void;
 	handleSubmit: (e: React.FormEvent) => void;
 	setFieldError: (field: keyof T, error: string) => void;
@@ -33,7 +33,7 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleChange = useCallback(
-		(field: keyof T) => (value: string) => {
+		(field: keyof T) => (value: T[keyof T]) => {
 			setValues((prev) => ({ ...prev, [field]: value }));
 			// Clear error when user starts typing
 			if (errors[field]) {

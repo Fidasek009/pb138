@@ -22,13 +22,29 @@ function generateId(): string {
 	return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
 }
 
+function isValidMessage(obj: unknown): obj is Message {
+	if (typeof obj !== "object" || obj === null) return false;
+	const msg = obj as Record<string, unknown>;
+	return (
+		typeof msg.id === "string" &&
+		(msg.role === "user" || msg.role === "bot") &&
+		typeof msg.content === "string"
+	);
+}
+
 function loadMessages(): Message[] {
 	const saved = localStorage.getItem(STORAGE_KEY);
 	if (saved) {
 		try {
-			return JSON.parse(saved);
+			const parsed = JSON.parse(saved) as unknown;
+			if (Array.isArray(parsed) && parsed.every(isValidMessage)) {
+				return parsed;
+			}
+			// Clear invalid data
+			localStorage.removeItem(STORAGE_KEY);
 		} catch {
-			// Fall through to default
+			// Clear corrupted data
+			localStorage.removeItem(STORAGE_KEY);
 		}
 	}
 	return [];
@@ -103,6 +119,12 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 	);
 
 	const clearMessages = useCallback(() => {
+		// Cancel any pending bot response timeout
+		if (responseTimeoutRef.current) {
+			clearTimeout(responseTimeoutRef.current);
+			responseTimeoutRef.current = null;
+		}
+		setIsTyping(false);
 		setMessages([
 			{
 				id: generateId(),

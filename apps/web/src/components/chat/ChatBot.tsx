@@ -165,11 +165,7 @@ export function ChatBot() {
 								))}
 								{isTyping && <TypingIndicator isDark={isDark} />}
 								{showRating && !isTyping && (
-									<Rating
-										isDark={isDark}
-										onRate={handleRating}
-										onDismiss={() => setShowRating(false)}
-									/>
+									<Rating isDark={isDark} onRate={handleRating} />
 								)}
 								<div ref={messagesEndRef} />
 							</div>
@@ -276,7 +272,6 @@ function TypingIndicator({ isDark }: TypingIndicatorProps) {
 interface RatingProps {
 	isDark: boolean;
 	onRate: (rating: "up" | "down") => void;
-	onDismiss: () => void;
 }
 
 function Rating({ isDark, onRate }: RatingProps) {

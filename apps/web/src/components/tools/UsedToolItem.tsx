@@ -29,7 +29,9 @@ export function UsedToolItem({ tool }: UsedToolItemProps) {
 			<div className="flex items-center gap-2">
 				<Button
 					size="sm"
-					className="border-2 border-primary text-primary-foreground hover:border-primary/80"
+					variant="outline"
+					disabled
+					title="Configuration coming soon"
 				>
 					Configure
 				</Button>

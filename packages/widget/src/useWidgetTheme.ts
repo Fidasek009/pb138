@@ -15,18 +15,16 @@ export function useWidgetTheme(): UseWidgetThemeReturn {
 	const [theme, setTheme] = useState<WidgetTheme>(() => {
 		if (typeof document === "undefined") return "light";
 		const root = document.documentElement;
-		const isDark =
-			root.classList.contains("dark") ||
-			window.matchMedia("(prefers-color-scheme: dark)").matches;
+		// Match main app behavior: check DOM class only
+		const isDark = root.classList.contains("dark");
 		return isDark ? "dark" : "light";
 	});
 
 	useEffect(() => {
 		const detectTheme = () => {
 			const root = document.documentElement;
-			const isDark =
-				root.classList.contains("dark") ||
-				window.matchMedia("(prefers-color-scheme: dark)").matches;
+			// Match main app behavior: check DOM class only
+			const isDark = root.classList.contains("dark");
 			setTheme(isDark ? "dark" : "light");
 		};
 
@@ -38,12 +36,8 @@ export function useWidgetTheme(): UseWidgetThemeReturn {
 			attributeFilter: ["class"],
 		});
 
-		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-		mediaQuery.addEventListener("change", detectTheme);
-
 		return () => {
 			observer.disconnect();
-			mediaQuery.removeEventListener("change", detectTheme);
 		};
 	}, []);
 

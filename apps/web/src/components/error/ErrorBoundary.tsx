@@ -54,7 +54,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 						</CardHeader>
 						<CardContent>
 							<p className="mb-4 text-muted-foreground text-sm">
-								{this.state.error?.message ?? "Unknown error"}
+								An unexpected error occurred. Please try reloading the page.
 							</p>
 							<Button
 								onClick={() => {

@@ -7,13 +7,14 @@ export interface WidgetProps {
 	className?: string;
 }
 
-export function Widget(_props: WidgetProps) {
+export function Widget(props: WidgetProps) {
+	const { className } = props;
 	const [isOpen, setIsOpen] = useState(false);
 	const { theme, isDark } = useWidgetTheme();
 
 	return (
 		<div
-			className={theme}
+			className={[theme, className].filter(Boolean).join(" ")}
 			style={{
 				fontFamily:
 					'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -21,12 +22,12 @@ export function Widget(_props: WidgetProps) {
 		>
 			{isOpen && (
 				<div
-					className={`mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl border${isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"}
+					className={`mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl border ${isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"}
 					`}
 				>
 					{/* Header */}
 					<header
-						className={`px-4 py-3 border-b${isDark ? "border-zinc-800 bg-zinc-900" : "border-zinc-100 bg-zinc-50"}
+						className={`px-4 py-3 border-b ${isDark ? "border-zinc-800 bg-zinc-900" : "border-zinc-100 bg-zinc-50"}
 						`}
 					>
 						<div className="flex items-center gap-3">
@@ -136,7 +137,7 @@ export function Widget(_props: WidgetProps) {
 			<button
 				type="button"
 				onClick={() => setIsOpen((prev) => !prev)}
-				className={`flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white shadow-xl transition-transform hover:scale-105 active:scale-95${isOpen ? "" : "animate-pulse"}
+				className={`flex h-14 w-14 items-center justify-center rounded-full bg-green-600 text-white shadow-xl transition-transform hover:scale-105 active:scale-95 ${isOpen ? "" : "animate-pulse"}
 				`}
 				aria-label={isOpen ? "Close chat" : "Open chat"}
 			>

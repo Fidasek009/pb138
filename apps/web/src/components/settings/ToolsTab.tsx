@@ -29,7 +29,7 @@ export function ToolsTab() {
 	const { setAnimationTimeout, clearAnimationTimeout } = useAnimationTimeout();
 
 	const isToolAdded = useCallback(
-		(toolId: string) => usedTools.some((t) => t.id === toolId),
+		(toolName: string) => usedTools.some((t) => t.name === toolName),
 		[usedTools],
 	);
 

@@ -71,7 +71,13 @@ export function Widget(props: WidgetProps) {
 
 	return (
 		<div
-			className={[theme, className].filter(Boolean).join(" ")}
+			className={[
+				"fixed right-6 bottom-6 z-50 flex flex-col items-end",
+				theme,
+				className,
+			]
+				.filter(Boolean)
+				.join(" ")}
 			style={{
 				fontFamily:
 					'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',

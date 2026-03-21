@@ -35,7 +35,11 @@ export function ChatHeader(props: ChatHeaderProps) {
 					>
 						Support Assistant
 					</h3>
-					<p className="text-green-600 text-xs dark:text-green-500">Online</p>
+					<p
+						className={`text-xs ${isDark ? "text-green-500" : "text-green-600"}`}
+					>
+						Online
+					</p>
 				</div>
 			</div>
 			<div

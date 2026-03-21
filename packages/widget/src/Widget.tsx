@@ -69,6 +69,7 @@ export function Widget(props: WidgetProps) {
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			e.preventDefault();
+			if (!inputValue.trim()) return;
 			handleSend();
 		}
 	};

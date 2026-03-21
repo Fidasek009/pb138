@@ -3,7 +3,7 @@ import { BotIcon, SendIcon } from "./icons";
 import { useWidgetTheme } from "./useWidgetTheme";
 
 export interface WidgetProps {
-	/** Optional className for styling overrides */
+	/** Optional className for styling overrides - use for positioning like "left-6 right-auto" */
 	className?: string;
 }
 
@@ -65,6 +65,16 @@ export function Widget(props: WidgetProps) {
 		}
 	};
 
+	const clearMessages = () => {
+		setMessages([
+			{
+				id: "welcome",
+				role: "bot",
+				content: "Hi! How can I help you today?",
+			},
+		]);
+	};
+
 	const chatContainerClasses = isDark
 		? "bg-zinc-950 ring-zinc-800"
 		: "bg-white ring-zinc-200";
@@ -117,6 +127,30 @@ export function Widget(props: WidgetProps) {
 								isDark ? "text-zinc-400" : "text-zinc-500"
 							}`}
 						>
+							{/* Clear/Reset Button */}
+							<button
+								type="button"
+								onClick={clearMessages}
+								className={`rounded-md p-1.5 ${
+									isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"
+								}`}
+								title="Clear chat"
+								aria-label="Clear chat history"
+							>
+								<svg
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									aria-hidden="true"
+								>
+									<title>Clear icon</title>
+									<path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+								</svg>
+							</button>
+							{/* Theme Toggle */}
 							<button
 								type="button"
 								onClick={toggleTheme}
@@ -157,6 +191,7 @@ export function Widget(props: WidgetProps) {
 									</svg>
 								)}
 							</button>
+							{/* Close Button */}
 							<button
 								type="button"
 								onClick={() => setIsOpen(false)}
@@ -246,7 +281,7 @@ export function Widget(props: WidgetProps) {
 								onKeyDown={handleKeyDown}
 								placeholder="Type your message..."
 								aria-label="Type your message"
-								className={`w-full rounded-full border px-4 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary ${
+								className={`w-full rounded-full border px-4 py-2 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary ${
 									isDark
 										? "border-zinc-800 bg-zinc-800 text-white placeholder:text-zinc-500"
 										: "border-zinc-200 bg-zinc-50 text-zinc-900 placeholder:text-zinc-500"
@@ -256,7 +291,7 @@ export function Widget(props: WidgetProps) {
 								type="button"
 								onClick={handleSend}
 								disabled={!inputValue.trim()}
-								className="absolute top-1/2 right-2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-primary disabled:opacity-50"
+								className="absolute top-1/2 right-3 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
 								aria-label="Send message"
 							>
 								<SendIcon size={16} />

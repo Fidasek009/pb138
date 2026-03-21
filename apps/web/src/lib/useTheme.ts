@@ -20,6 +20,18 @@ export function useTheme() {
 		localStorage.setItem(STORAGE_KEYS.THEME, theme);
 	}, [theme]);
 
+	// Listen for toggle events from other components (e.g., chat widget)
+	useEffect(() => {
+		const handleToggle = () => {
+			setTheme((prev) => (prev === "light" ? "dark" : "light"));
+		};
+
+		document.addEventListener("toggle-theme", handleToggle);
+		return () => {
+			document.removeEventListener("toggle-theme", handleToggle);
+		};
+	}, []);
+
 	const toggleTheme = () => {
 		setTheme((prev) => (prev === "light" ? "dark" : "light"));
 	};

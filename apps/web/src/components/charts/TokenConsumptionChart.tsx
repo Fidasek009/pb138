@@ -74,13 +74,10 @@ export function TokenConsumptionChart({ data }: TokenConsumptionChartProps) {
 						</BarChart>
 					</ResponsiveContainer>
 				) : (
-					<div
-						className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
-						role="status"
-					>
+					<output className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
 						<BarChart3 size={48} className="opacity-50" />
 						<p>No data available</p>
-					</div>
+					</output>
 				)}
 			</CardContent>
 		</Card>

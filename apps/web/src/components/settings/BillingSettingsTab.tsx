@@ -34,7 +34,7 @@ export function BillingSettingsTab() {
 			<CardFooter className="flex justify-between">
 				<button
 					type="button"
-					className="relative h-12 overflow-hidden rounded-md border-2 border-primary transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+					className="relative h-16 overflow-hidden rounded-md border-2 border-primary transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
 				>
 					<img
 						src={upgradeImage}

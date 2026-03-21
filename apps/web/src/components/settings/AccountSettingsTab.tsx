@@ -56,9 +56,7 @@ export function AccountSettingsTab() {
 				</div>
 			</CardContent>
 			<CardFooter className="flex justify-end">
-				<Button className="border-2 border-primary text-primary-foreground hover:border-primary/80">
-					Change Password
-				</Button>
+				<Button variant="default">Change Password</Button>
 			</CardFooter>
 		</Card>
 	);

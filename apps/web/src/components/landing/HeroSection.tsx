@@ -14,19 +14,10 @@ export function HeroSection() {
 				answers instantly.
 			</p>
 			<div className="mt-10 flex items-center justify-center gap-x-6">
-				<Button
-					size="lg"
-					asChild
-					className="border-2 border-primary text-primary-foreground hover:border-primary/80"
-				>
+				<Button size="lg" asChild>
 					<Link to="/register">Start for free</Link>
 				</Button>
-				<Button
-					variant="outline"
-					size="lg"
-					asChild
-					className="border-2 border-primary hover:border-primary/80"
-				>
+				<Button variant="outline-primary" size="lg" asChild>
 					<Link to="/login">View Demo Dashboard</Link>
 				</Button>
 			</div>

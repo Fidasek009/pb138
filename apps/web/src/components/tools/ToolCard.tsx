@@ -15,7 +15,6 @@ export function ToolCard({ tool, isAdded, onAdd }: ToolCardProps) {
 				<ToolIcon color={tool.color} icon={tool.icon} size="md" />
 				<Button
 					size="sm"
-					className="border-2 border-primary text-primary-foreground hover:border-primary/80"
 					onClick={(e) => {
 						e.stopPropagation();
 						onAdd(tool, e);

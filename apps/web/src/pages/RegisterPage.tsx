@@ -110,7 +110,7 @@ export function RegisterPage() {
 								Already have an account?{" "}
 								<Link
 									to="/login"
-									className="rounded-md border-2 border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"
+									className="rounded-md border border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"
 								>
 									Log in
 								</Link>

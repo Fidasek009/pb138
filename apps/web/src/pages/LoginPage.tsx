@@ -101,17 +101,14 @@ export function LoginPage() {
 							</div>
 						</CardContent>
 						<CardFooter className="flex flex-col">
-							<Button
-								className="w-full border-2 border-primary hover:border-primary/80"
-								type="submit"
-							>
+							<Button className="w-full" type="submit">
 								Log in
 							</Button>
 							<div className="mt-4 text-center text-muted-foreground text-sm">
 								Don&apos;t have an account?{" "}
 								<Link
 									to="/register"
-									className="rounded-md border-2 border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"
+									className="rounded-md border border-primary/50 px-3 py-1 font-medium text-primary underline underline-offset-4 hover:border-primary hover:text-primary/80"
 								>
 									Sign up
 								</Link>

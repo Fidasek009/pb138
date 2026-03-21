@@ -134,7 +134,7 @@ export function ToolsTab() {
 				<Button
 					disabled
 					title="Tool configuration persistence coming soon"
-					className="border-2 border-primary text-primary-foreground hover:border-primary/80"
+					variant="default"
 				>
 					Save Tool Configuration
 				</Button>

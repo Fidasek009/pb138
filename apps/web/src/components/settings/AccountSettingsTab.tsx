@@ -26,7 +26,7 @@ export function AccountSettingsTab() {
 						<Input
 							id="account-api-key"
 							type="password"
-							defaultValue="sk-...xxxxxxxxxxxx"
+							placeholder="••••••••••••••••"
 							readOnly
 							className="flex-1"
 						/>

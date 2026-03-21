@@ -75,6 +75,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 		saveMessages(messages);
 		if (messages.length > UI.CHAT_MAX_MESSAGES_BEFORE_RATING && !isTyping) {
 			setShowRating(true);
+			localStorage.setItem(STORAGE_KEYS.CHAT_RATING_SHOWN, "true");
 		}
 	}, [messages, isTyping]);
 
@@ -133,8 +134,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 			},
 		]);
 		setShowRating(false);
-		localStorage.removeItem("chatbot_rating_shown");
-		localStorage.removeItem("chatbot_rating_value");
+		localStorage.removeItem(STORAGE_KEYS.CHAT_RATING_SHOWN);
+		localStorage.removeItem(STORAGE_KEYS.CHAT_RATING_VALUE);
 	}, []);
 
 	return {

@@ -1,3 +1,4 @@
+import { MessageSquare } from "lucide-react";
 import {
 	CartesianGrid,
 	Line,
@@ -21,6 +22,8 @@ interface QuestionsAskedChartProps {
 }
 
 export function QuestionsAskedChart({ data }: QuestionsAskedChartProps) {
+	const hasData = data.length > 0;
+
 	return (
 		<Card>
 			<CardHeader>
@@ -30,46 +33,60 @@ export function QuestionsAskedChart({ data }: QuestionsAskedChartProps) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="h-[300px]">
-				<ResponsiveContainer width="100%" height="100%">
-					<LineChart data={data}>
-						<CartesianGrid
-							strokeDasharray="3 3"
-							vertical={false}
-							stroke="#e4e4e7"
-						/>
-						<XAxis
-							dataKey="name"
-							stroke="#888888"
-							fontSize={12}
-							tickLine={false}
-							axisLine={false}
-						/>
-						<YAxis
-							stroke="#888888"
-							fontSize={12}
-							tickLine={false}
-							axisLine={false}
-						/>
-						<Tooltip
-							cursor={{
-								stroke: "#a1a1aa",
-								strokeWidth: 1,
-								strokeDasharray: "3 3",
-							}}
-							contentStyle={{
-								borderRadius: "8px",
-								border: "1px solid #e4e4e7",
-							}}
-						/>
-						<Line
-							type="monotone"
-							dataKey="questions"
-							stroke="var(--primary)"
-							strokeWidth={2}
-							activeDot={{ r: 8 }}
-						/>
-					</LineChart>
-				</ResponsiveContainer>
+				{hasData ? (
+					<ResponsiveContainer width="100%" height="100%">
+						<LineChart
+							data={data}
+							role="img"
+							aria-label="Line chart showing questions asked over the last 7 days"
+						>
+							<CartesianGrid
+								strokeDasharray="3 3"
+								vertical={false}
+								stroke="#e4e4e7"
+							/>
+							<XAxis
+								dataKey="name"
+								stroke="#888888"
+								fontSize={12}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<YAxis
+								stroke="#888888"
+								fontSize={12}
+								tickLine={false}
+								axisLine={false}
+							/>
+							<Tooltip
+								cursor={{
+									stroke: "#a1a1aa",
+									strokeWidth: 1,
+									strokeDasharray: "3 3",
+								}}
+								contentStyle={{
+									borderRadius: "8px",
+									border: "1px solid #e4e4e7",
+								}}
+							/>
+							<Line
+								type="monotone"
+								dataKey="questions"
+								stroke="var(--primary)"
+								strokeWidth={2}
+								activeDot={{ r: 8 }}
+							/>
+						</LineChart>
+					</ResponsiveContainer>
+				) : (
+					<div
+						className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
+						role="status"
+					>
+						<MessageSquare size={48} className="opacity-50" />
+						<p>No data available</p>
+					</div>
+				)}
 			</CardContent>
 		</Card>
 	);

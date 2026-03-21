@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useTheme } from "@/lib/useTheme";
 
 export type ChatTheme = "light" | "dark";
 
@@ -8,35 +8,12 @@ interface UseSyncedThemeReturn {
 	isDark: boolean;
 }
 
+/**
+ * Hook that syncs with the global app theme.
+ * The chat widget theme is controlled by the global theme toggle.
+ */
 export function useSyncedTheme(): UseSyncedThemeReturn {
-	const [theme, setTheme] = useState<ChatTheme>(() => {
-		if (typeof document === "undefined") return "light";
-		return document.documentElement.classList.contains("dark")
-			? "dark"
-			: "light";
-	});
-
-	// Detect theme from document
-	useEffect(() => {
-		const detectTheme = () => {
-			const isDark = document.documentElement.classList.contains("dark");
-			setTheme(isDark ? "dark" : "light");
-		};
-
-		detectTheme();
-
-		const observer = new MutationObserver(detectTheme);
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ["class"],
-		});
-
-		return () => observer.disconnect();
-	}, []);
-
-	const toggleTheme = () => {
-		setTheme((prev) => (prev === "light" ? "dark" : "light"));
-	};
+	const { theme, toggleTheme } = useTheme();
 
 	return {
 		theme,

@@ -1,40 +1,14 @@
-export function SendIcon({ size = 16 }: { size?: number }) {
-	return (
-		<svg
-			width={size}
-			height={size}
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<title>Send</title>
-			<line x1="22" y1="2" x2="11" y2="13" />
-			<polygon points="22 2 15 22 11 13 2 9 22 2" />
-		</svg>
-	);
+import BotIconSvg from "../assets/bot-icon.svg?react";
+import SendIconSvg from "../assets/send-icon.svg?react";
+
+interface IconProps {
+	size?: number;
 }
 
-export function BotIcon({ size = 28 }: { size?: number }) {
-	return (
-		<svg
-			width={size}
-			height={size}
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<title>Chat bot</title>
-			<rect x="3" y="11" width="18" height="10" rx="2" />
-			<circle cx="12" cy="5" r="2" />
-			<path d="M12 7v4" />
-			<line x1="7" y1="16" x2="9" y2="16" />
-			<line x1="15" y1="16" x2="17" y2="16" />
-		</svg>
-	);
+export function SendIcon({ size = 16 }: IconProps) {
+	return <SendIconSvg width={size} height={size} aria-hidden="true" />;
+}
+
+export function BotIcon({ size = 28 }: IconProps) {
+	return <BotIconSvg width={size} height={size} aria-hidden="true" />;
 }

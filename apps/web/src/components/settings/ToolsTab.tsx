@@ -131,7 +131,11 @@ export function ToolsTab() {
 				</AnimatePresence>
 			</CardContent>
 			<CardFooter className="flex justify-end">
-				<Button className="border-2 border-primary text-primary-foreground hover:border-primary/80">
+				<Button
+					disabled
+					title="Tool configuration persistence coming soon"
+					className="border-2 border-primary text-primary-foreground hover:border-primary/80"
+				>
 					Save Tool Configuration
 				</Button>
 			</CardFooter>

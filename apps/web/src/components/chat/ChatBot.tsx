@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { STORAGE_KEYS } from "@/lib/constants";
 import { useChat } from "./useChat";
 import { useSyncedTheme } from "./useSyncedTheme";
 
@@ -58,7 +59,7 @@ export function ChatBot() {
 
 	const handleRating = useCallback(
 		(rating: "up" | "down") => {
-			localStorage.setItem("chatbot_rating_value", rating);
+			localStorage.setItem(STORAGE_KEYS.CHAT_RATING_VALUE, rating);
 			setShowRating(false);
 		},
 		[setShowRating],
@@ -94,7 +95,7 @@ export function ChatBot() {
 						>
 							<div className="flex items-center gap-2">
 								<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
-									<Bot size={18} />
+									<Bot size={18} aria-hidden="true" />
 								</div>
 								<div>
 									<h3

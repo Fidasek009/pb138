@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
-type FormErrors<T> = Partial<Record<keyof T, string>>;
+type FormErrors<T> = Partial<Record<keyof T | "_form", string>>;
 type FormTouched<T> = Partial<Record<keyof T, boolean>>;
 type Validator<T> = (values: T) => FormErrors<T>;
 
@@ -31,6 +31,8 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 	const [errors, setErrors] = useState<FormErrors<T>>({});
 	const [touched, setTouched] = useState<FormTouched<T>>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	// Ref to prevent duplicate submissions synchronously
+	const isSubmittingRef = useRef(false);
 
 	const handleChange = useCallback(
 		(field: keyof T) => (value: T[keyof T]) => {
@@ -48,10 +50,11 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 			setTouched((prev) => ({ ...prev, [field]: true }));
 			if (validate) {
 				const validationErrors = validate(values);
-				if (validationErrors[field]) {
+				const fieldError = validationErrors[field];
+				if (fieldError) {
 					setErrors((prev) => ({
 						...prev,
-						[field]: validationErrors[field],
+						[field]: fieldError,
 					}));
 				}
 			}
@@ -59,9 +62,23 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 		[validate, values],
 	);
 
+	const hasRealErrors = useCallback(
+		(validationErrors: FormErrors<T>): boolean => {
+			return Object.values(validationErrors).some(
+				(error) => error !== undefined && error !== "",
+			);
+		},
+		[],
+	);
+
 	const handleSubmit = useCallback(
 		async (e: React.FormEvent) => {
 			e.preventDefault();
+
+			// Prevent duplicate submissions synchronously
+			if (isSubmittingRef.current) {
+				return;
+			}
 
 			// Mark all fields as touched
 			const allTouched = Object.fromEntries(
@@ -74,19 +91,22 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 				const validationErrors = validate(values);
 				setErrors(validationErrors);
 
-				if (Object.keys(validationErrors).length > 0) {
+				// Check for actual error values, not just keys
+				if (hasRealErrors(validationErrors)) {
 					return;
 				}
 			}
 
+			isSubmittingRef.current = true;
 			setIsSubmitting(true);
 			try {
 				await onSubmit(values);
 			} finally {
+				isSubmittingRef.current = false;
 				setIsSubmitting(false);
 			}
 		},
-		[initialValues, onSubmit, validate, values],
+		[initialValues, onSubmit, validate, values, hasRealErrors],
 	);
 
 	const setFieldError = useCallback((field: keyof T, error: string) => {
@@ -98,6 +118,7 @@ export function useForm<T extends Record<string, string | number | boolean>>({
 		setErrors({});
 		setTouched({});
 		setIsSubmitting(false);
+		isSubmittingRef.current = false;
 	}, [initialValues]);
 
 	return {

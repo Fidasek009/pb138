@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { AlertCircle, Bot, Moon, Sun } from "lucide-react";
+import { AuthFormField, AuthHeader } from "@/components/auth";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -9,10 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "@/lib/useForm";
-import { useTheme } from "@/lib/useTheme";
 import { registerSchema } from "@/schemas";
 
 interface RegisterFormData extends Record<string, string> {
@@ -21,7 +18,7 @@ interface RegisterFormData extends Record<string, string> {
 	confirmPassword: string;
 }
 
-const validateRegisterForm = (values: RegisterFormData) => {
+function validateRegisterForm(values: RegisterFormData) {
 	const result = registerSchema.safeParse(values);
 	if (result.success) return {};
 
@@ -33,11 +30,10 @@ const validateRegisterForm = (values: RegisterFormData) => {
 		}
 	}
 	return errors;
-};
+}
 
 export function RegisterPage() {
 	const navigate = useNavigate();
-	const { theme, toggleTheme } = useTheme();
 
 	const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
 		useForm<RegisterFormData>({
@@ -49,38 +45,10 @@ export function RegisterPage() {
 			},
 		});
 
-	const showEmailError = touched.email && errors.email;
-	const showPasswordError = touched.password && errors.password;
-	const showConfirmPasswordError =
-		touched.confirmPassword && errors.confirmPassword;
-
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
 			<div className="w-full max-w-sm">
-				<div className="mb-8 flex flex-col items-center">
-					<div className="mb-6 flex w-full items-center justify-between rounded-lg border-2 border-primary/30 p-4">
-						<Link to="/" className="flex items-center gap-2">
-							<div className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-primary bg-primary text-primary-foreground">
-								<Bot size={24} />
-							</div>
-							<span className="font-bold text-card-foreground text-xl">
-								PagePal
-							</span>
-						</Link>
-						<button
-							type="button"
-							onClick={toggleTheme}
-							aria-label={
-								theme === "dark"
-									? "Switch to light theme"
-									: "Switch to dark theme"
-							}
-							className="rounded-lg border-2 border-primary/50 p-2 text-muted-foreground hover:border-primary hover:text-foreground"
-						>
-							{theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-						</button>
-					</div>
-				</div>
+				<AuthHeader />
 
 				<Card>
 					<CardHeader className="space-y-1">
@@ -93,99 +61,46 @@ export function RegisterPage() {
 					</CardHeader>
 					<form onSubmit={handleSubmit} noValidate>
 						<CardContent className="space-y-4">
-							<div className="space-y-2">
-								<Label htmlFor="email">Email</Label>
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									placeholder="m@example.com"
-									value={values.email}
-									onChange={(e) => handleChange("email")(e.target.value)}
-									onBlur={handleBlur("email")}
-									aria-invalid={Boolean(showEmailError)}
-									aria-describedby={showEmailError ? "email-error" : undefined}
-									className={
-										showEmailError
-											? "border-red-500 focus-visible:ring-red-500"
-											: ""
-									}
-								/>
-								{showEmailError && (
-									<div
-										id="email-error"
-										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
-										aria-live="polite"
-									>
-										<AlertCircle size={14} />
-										<span>{errors.email}</span>
-									</div>
-								)}
-							</div>
-							<div className="space-y-2">
-								<Label htmlFor="password">Password</Label>
-								<Input
-									id="password"
-									name="password"
-									type="password"
-									value={values.password}
-									onChange={(e) => handleChange("password")(e.target.value)}
-									onBlur={handleBlur("password")}
-									aria-invalid={Boolean(showPasswordError)}
-									aria-describedby={
-										showPasswordError ? "password-error" : undefined
-									}
-									className={
-										showPasswordError
-											? "border-red-500 focus-visible:ring-red-500"
-											: ""
-									}
-								/>
-								{showPasswordError && (
-									<div
-										id="password-error"
-										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
-										aria-live="polite"
-									>
-										<AlertCircle size={14} />
-										<span>{errors.password}</span>
-									</div>
-								)}
-							</div>
-							<div className="space-y-2">
-								<Label htmlFor="confirm-password">Confirm Password</Label>
-								<Input
-									id="confirm-password"
-									name="confirmPassword"
-									type="password"
-									value={values.confirmPassword ?? ""}
-									onChange={(e) =>
-										handleChange("confirmPassword")(e.target.value)
-									}
-									onBlur={handleBlur("confirmPassword")}
-									aria-invalid={Boolean(showConfirmPasswordError)}
-									aria-describedby={
-										showConfirmPasswordError
-											? "confirm-password-error"
-											: undefined
-									}
-									className={
-										showConfirmPasswordError
-											? "border-red-500 focus-visible:ring-red-500"
-											: ""
-									}
-								/>
-								{showConfirmPasswordError && (
-									<div
-										id="confirm-password-error"
-										className="flex items-center gap-1.5 text-red-600 text-sm dark:text-red-500"
-										aria-live="polite"
-									>
-										<AlertCircle size={14} />
-										<span>{errors.confirmPassword}</span>
-									</div>
-								)}
-							</div>
+							<AuthFormField
+								id="email"
+								name="email"
+								label="Email"
+								type="email"
+								placeholder="m@example.com"
+								value={values.email}
+								onChange={handleChange("email")}
+								onBlur={handleBlur("email")}
+								error={errors.email}
+								showError={touched.email && !!errors.email}
+								errorId="email-error"
+								autoComplete="email"
+							/>
+							<AuthFormField
+								id="password"
+								name="password"
+								label="Password"
+								type="password"
+								value={values.password}
+								onChange={handleChange("password")}
+								onBlur={handleBlur("password")}
+								error={errors.password}
+								showError={touched.password && !!errors.password}
+								errorId="password-error"
+								autoComplete="new-password"
+							/>
+							<AuthFormField
+								id="confirm-password"
+								name="confirmPassword"
+								label="Confirm Password"
+								type="password"
+								value={values.confirmPassword}
+								onChange={handleChange("confirmPassword")}
+								onBlur={handleBlur("confirmPassword")}
+								error={errors.confirmPassword}
+								showError={touched.confirmPassword && !!errors.confirmPassword}
+								errorId="confirm-password-error"
+								autoComplete="new-password"
+							/>
 						</CardContent>
 						<CardFooter className="flex flex-col">
 							<Button className="w-full" type="submit">

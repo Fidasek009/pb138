@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BotIcon, SendIcon } from "./icons";
+import { ChatHeader } from "./ChatHeader";
+import { ChatInput } from "./ChatInput";
+import { ChatMessageList } from "./ChatMessageList";
+import { BotIcon, XLargeIcon } from "./icons";
 import { useWidgetTheme } from "./useWidgetTheme";
+import "./Widget.css";
 
 export interface WidgetProps {
 	/** Optional className for styling overrides - use for positioning like "left-6 right-auto" */
 	className?: string;
+	/** Position of the widget - affects send button placement. "right" (default) puts button on left, "left" puts button on right */
+	position?: "left" | "right";
 }
 
 interface Message {
@@ -14,8 +20,10 @@ interface Message {
 }
 
 export function Widget(props: WidgetProps) {
-	const { className } = props;
+	const { className, position = "right" } = props;
+	const isRightPosition = position === "right";
 	const [isOpen, setIsOpen] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(false);
 	const [inputValue, setInputValue] = useState("");
 	const [messages, setMessages] = useState<Message[]>([
 		{
@@ -65,6 +73,10 @@ export function Widget(props: WidgetProps) {
 		}
 	};
 
+	const toggleExpanded = () => {
+		setIsExpanded((prev) => !prev);
+	};
+
 	const clearMessages = () => {
 		setMessages([
 			{
@@ -95,220 +107,35 @@ export function Widget(props: WidgetProps) {
 		>
 			{isOpen && (
 				<div
-					className={`mb-3 flex h-[500px] w-[350px] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 ${chatContainerClasses}`}
+					className={`mb-3 flex ${isExpanded ? "h-[80vh]" : "h-[500px]"} w-[350px] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 transition-all duration-300 ${chatContainerClasses}`}
 				>
-					{/* Header */}
-					<header
-						className={`flex items-center justify-between border-b px-4 py-3 ${
-							isDark
-								? "border-zinc-800 bg-zinc-900"
-								: "border-zinc-100 bg-zinc-50"
-						}`}
-					>
-						<div className="flex items-center gap-2">
-							<div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white">
-								<BotIcon size={18} />
-							</div>
-							<div>
-								<h3
-									className={`font-semibold text-sm ${
-										isDark ? "text-zinc-50" : "text-zinc-900"
-									}`}
-								>
-									Support Assistant
-								</h3>
-								<p className="text-green-600 text-xs dark:text-green-500">
-									Online
-								</p>
-							</div>
-						</div>
-						<div
-							className={`flex items-center gap-1 ${
-								isDark ? "text-zinc-400" : "text-zinc-500"
-							}`}
-						>
-							{/* Clear/Reset Button */}
-							<button
-								type="button"
-								onClick={clearMessages}
-								className={`rounded-md p-1.5 ${
-									isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"
-								}`}
-								title="Clear chat"
-								aria-label="Clear chat history"
-							>
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									aria-hidden="true"
-								>
-									<title>Clear icon</title>
-									<path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-								</svg>
-							</button>
-							{/* Theme Toggle */}
-							<button
-								type="button"
-								onClick={toggleTheme}
-								className={`rounded-md p-1.5 ${
-									isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"
-								}`}
-								title={isDark ? "Switch to light" : "Switch to dark"}
-								aria-label={
-									isDark ? "Switch to light theme" : "Switch to dark theme"
-								}
-							>
-								{isDark ? (
-									<svg
-										width="16"
-										height="16"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										aria-hidden="true"
-									>
-										<title>Sun icon</title>
-										<circle cx="12" cy="12" r="5" />
-										<path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-									</svg>
-								) : (
-									<svg
-										width="16"
-										height="16"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										strokeWidth="2"
-										aria-hidden="true"
-									>
-										<title>Moon icon</title>
-										<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-									</svg>
-								)}
-							</button>
-							{/* Close Button */}
-							<button
-								type="button"
-								onClick={() => setIsOpen(false)}
-								className={`rounded-md p-1.5 ${
-									isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"
-								}`}
-								title="Close chat"
-								aria-label="Close chat"
-							>
-								<svg
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									aria-hidden="true"
-								>
-									<title>Close icon</title>
-									<path d="M18 6 6 18M6 6l12 12" />
-								</svg>
-							</button>
-						</div>
-					</header>
+					<ChatHeader
+						isDark={isDark}
+						isExpanded={isExpanded}
+						onClear={clearMessages}
+						onToggleExpand={toggleExpanded}
+						onToggleTheme={toggleTheme}
+						onClose={() => setIsOpen(false)}
+					/>
 
-					{/* Chat Area */}
-					<div
-						className={`flex-1 overflow-y-auto p-4 ${
-							isDark ? "bg-zinc-950" : "bg-white"
-						}`}
-					>
-						<div className="space-y-4">
-							{messages.map((msg) => (
-								<div
-									key={msg.id}
-									className={`flex ${
-										msg.role === "user" ? "justify-end" : "justify-start"
-									}`}
-								>
-									<div
-										className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm ${
-											msg.role === "user"
-												? "bg-primary text-primary-foreground"
-												: isDark
-													? "bg-zinc-900 text-zinc-50"
-													: "bg-zinc-100 text-zinc-900"
-										}`}
-									>
-										{msg.content}
-									</div>
-								</div>
-							))}
-							{isTyping && (
-								<div className="flex justify-start">
-									<div
-										className={`flex max-w-[85%] gap-1 rounded-2xl px-4 py-3 ${
-											isDark ? "bg-zinc-900" : "bg-zinc-100"
-										}`}
-									>
-										{[0, 1, 2].map((i) => (
-											<div
-												key={i}
-												className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-400"
-												style={{ animationDelay: `${i * 0.15}s` }}
-											/>
-										))}
-									</div>
-								</div>
-							)}
-							<div ref={messagesEndRef} />
-						</div>
-					</div>
+					<ChatMessageList
+						messages={messages}
+						isTyping={isTyping}
+						isDark={isDark}
+						messagesEndRef={messagesEndRef}
+					/>
 
-					{/* Input Area */}
-					<div
-						className={`border-t p-4 ${
-							isDark
-								? "border-zinc-800 bg-zinc-950"
-								: "border-zinc-100 bg-white"
-						}`}
-					>
-						<div className="relative">
-							<input
-								type="text"
-								value={inputValue}
-								onChange={(e) => setInputValue(e.target.value)}
-								onKeyDown={handleKeyDown}
-								placeholder="Type your message..."
-								aria-label="Type your message"
-								className={`w-full rounded-full border px-4 py-2 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary ${
-									isDark
-										? "border-zinc-800 bg-zinc-800 text-white placeholder:text-zinc-500"
-										: "border-zinc-200 bg-zinc-50 text-zinc-900 placeholder:text-zinc-500"
-								}`}
-							/>
-							<button
-								type="button"
-								onClick={handleSend}
-								disabled={!inputValue.trim()}
-								className="absolute top-1/2 right-3 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10 disabled:opacity-50"
-								aria-label="Send message"
-							>
-								<SendIcon size={16} />
-							</button>
-						</div>
-						<p
-							className={`mt-2 text-center text-[10px] ${
-								isDark ? "text-zinc-500" : "text-zinc-400"
-							}`}
-						>
-							Powered by PagePal
-						</p>
-					</div>
+					<ChatInput
+						inputValue={inputValue}
+						isDark={isDark}
+						isRightPosition={isRightPosition}
+						onInputChange={setInputValue}
+						onSend={handleSend}
+						onKeyDown={handleKeyDown}
+					/>
 				</div>
 			)}
 
-			{/* Toggle Button */}
 			<button
 				type="button"
 				onClick={() => setIsOpen((prev) => !prev)}
@@ -317,22 +144,7 @@ export function Widget(props: WidgetProps) {
 				}`}
 				aria-label={isOpen ? "Close chat" : "Open chat"}
 			>
-				{isOpen ? (
-					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						aria-hidden="true"
-					>
-						<title>Close icon</title>
-						<path d="M18 6 6 18M6 6l12 12" />
-					</svg>
-				) : (
-					<BotIcon size={28} />
-				)}
+				{isOpen ? <XLargeIcon /> : <BotIcon size={28} />}
 			</button>
 		</div>
 	);

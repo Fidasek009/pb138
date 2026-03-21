@@ -4,8 +4,6 @@ import {
 	CloseIcon,
 	ExpandIcon,
 	MinimizeIcon,
-	MoonIcon,
-	SunIcon,
 } from "./icons";
 
 interface ChatHeaderProps {
@@ -13,19 +11,11 @@ interface ChatHeaderProps {
 	isExpanded: boolean;
 	onClear: () => void;
 	onToggleExpand: () => void;
-	onToggleTheme: () => void;
 	onClose: () => void;
 }
 
 export function ChatHeader(props: ChatHeaderProps) {
-	const {
-		isDark,
-		isExpanded,
-		onClear,
-		onToggleExpand,
-		onToggleTheme,
-		onClose,
-	} = props;
+	const { isDark, isExpanded, onClear, onToggleExpand, onClose } = props;
 
 	return (
 		<header
@@ -74,17 +64,6 @@ export function ChatHeader(props: ChatHeaderProps) {
 					aria-label={isExpanded ? "Minimize chat" : "Expand chat"}
 				>
 					{isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
-				</button>
-				<button
-					type="button"
-					onClick={onToggleTheme}
-					className={`rounded-md p-1.5 ${
-						isDark ? "hover:bg-zinc-800" : "hover:bg-zinc-200"
-					}`}
-					title={isDark ? "Switch to light" : "Switch to dark"}
-					aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-				>
-					{isDark ? <SunIcon /> : <MoonIcon />}
 				</button>
 				<button
 					type="button"

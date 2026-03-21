@@ -5,12 +5,11 @@ export type WidgetTheme = "light" | "dark";
 interface UseWidgetThemeReturn {
 	theme: WidgetTheme;
 	isDark: boolean;
-	toggleTheme: () => void;
 }
 
 /**
  * Hook to detect and sync with parent document theme
- * Watches for dark class on document and dispatches toggle event
+ * Watches for dark class on document - read-only, no manual toggle
  */
 export function useWidgetTheme(): UseWidgetThemeReturn {
 	const [theme, setTheme] = useState<WidgetTheme>(() => {
@@ -40,14 +39,8 @@ export function useWidgetTheme(): UseWidgetThemeReturn {
 		};
 	}, []);
 
-	const toggleTheme = () => {
-		const event = new CustomEvent("toggle-theme");
-		document.dispatchEvent(event);
-	};
-
 	return {
 		theme,
 		isDark: theme === "dark",
-		toggleTheme,
 	};
 }

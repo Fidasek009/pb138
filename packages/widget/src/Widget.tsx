@@ -34,7 +34,7 @@ export function Widget(props: WidgetProps) {
 	]);
 	const [isTyping, setIsTyping] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
-	const { theme, toggleTheme, isDark } = useWidgetTheme();
+	const { theme, isDark } = useWidgetTheme();
 
 	// Auto-scroll to bottom
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally scroll on messages change
@@ -114,7 +114,6 @@ export function Widget(props: WidgetProps) {
 						isExpanded={isExpanded}
 						onClear={clearMessages}
 						onToggleExpand={toggleExpanded}
-						onToggleTheme={toggleTheme}
 						onClose={() => setIsOpen(false)}
 					/>
 

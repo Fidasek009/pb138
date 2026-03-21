@@ -23,12 +23,12 @@ export function BillingSettingsTab() {
 				</div>
 				<div className="flex items-center justify-between space-x-2 pt-2">
 					<div>
-						<Label>Usage Alerts</Label>
+						<Label htmlFor="usage-alerts">Usage Alerts</Label>
 						<p className="text-muted-foreground text-sm">
 							Email me when reaching 80% of limit
 						</p>
 					</div>
-					<Switch defaultChecked />
+					<Switch id="usage-alerts" defaultChecked />
 				</div>
 			</CardContent>
 			<CardFooter className="flex justify-between">

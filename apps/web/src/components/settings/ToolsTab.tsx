@@ -25,19 +25,27 @@ export function ToolsTab() {
 		startY: number;
 	} | null>(null);
 	const [usedTools, setUsedTools] = useState<Tool[]>(DEFAULT_USED_TOOLS);
+	const [pendingToolNames, setPendingToolNames] = useState<Set<string>>(
+		new Set(),
+	);
 
 	const { setAnimationTimeout, clearAnimationTimeout } = useAnimationTimeout();
 
 	const isToolAdded = useCallback(
-		(toolName: string) => usedTools.some((t) => t.name === toolName),
-		[usedTools],
+		(toolName: string) =>
+			usedTools.some((t) => t.name === toolName) ||
+			pendingToolNames.has(toolName),
+		[usedTools, pendingToolNames],
 	);
 
 	const handleAddTool = useCallback(
 		(tool: Tool, event: React.MouseEvent) => {
-			if (isToolAdded(tool.id)) {
+			if (isToolAdded(tool.name)) {
 				return;
 			}
+
+			// Track pending addition to prevent duplicates during animation
+			setPendingToolNames((prev) => new Set(prev).add(tool.name));
 
 			clearAnimationTimeout();
 
@@ -55,6 +63,11 @@ export function ToolsTab() {
 			setAnimationTimeout(() => {
 				setUsedTools((prev) => [...prev, { ...tool, id: generateToolId() }]);
 				setMovingTool(null);
+				setPendingToolNames((prev) => {
+					const next = new Set(prev);
+					next.delete(tool.name);
+					return next;
+				});
 			}, 1000);
 		},
 		[clearAnimationTimeout, setAnimationTimeout, isToolAdded],
@@ -84,7 +97,7 @@ export function ToolsTab() {
 							<ToolCard
 								key={tool.id}
 								tool={tool}
-								isAdded={isToolAdded(tool.id)}
+								isAdded={isToolAdded(tool.name)}
 								onAdd={handleAddTool}
 							/>
 						))}

@@ -22,12 +22,12 @@ export function Widget(props: WidgetProps) {
 		>
 			{isOpen && (
 				<div
-					className={`mb-3 w-80 overflow-hidden rounded-2xl shadow-2xl border ${isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"}
+					className={`mb-3 w-80 overflow-hidden rounded-2xl border shadow-2xl ${isDark ? "border-zinc-800 bg-zinc-950" : "border-zinc-200 bg-white"}
 					`}
 				>
 					{/* Header */}
 					<header
-						className={`px-4 py-3 border-b ${isDark ? "border-zinc-800 bg-zinc-900" : "border-zinc-100 bg-zinc-50"}
+						className={`border-b px-4 py-3 ${isDark ? "border-zinc-800 bg-zinc-900" : "border-zinc-100 bg-zinc-50"}
 						`}
 					>
 						<div className="flex items-center gap-3">

@@ -4,7 +4,6 @@ import { ChatInput } from "./ChatInput";
 import { ChatMessageList } from "./ChatMessageList";
 import { BotIcon, XLargeIcon } from "./icons";
 import { useWidgetTheme } from "./useWidgetTheme";
-import "./Widget.css";
 
 export interface WidgetProps {
 	/** Optional className for styling overrides - use for positioning like "left-6 right-auto" */

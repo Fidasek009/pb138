@@ -1,6 +1,11 @@
-/* Custom scrollbar styles for Widget */
+@import "tailwindcss";
 
-/* Webkit browsers (Chrome, Safari, Edge) */
+@theme {
+	--color-primary: #16a34a;
+	--color-primary-foreground: #ffffff;
+}
+
+/* Custom scrollbar styles for Widget */
 .widget-scrollbar::-webkit-scrollbar {
 	width: 6px;
 }
@@ -18,13 +23,11 @@
 	background-color: rgba(100, 100, 100, 0.5);
 }
 
-/* Firefox */
 .widget-scrollbar {
 	scrollbar-width: thin;
 	scrollbar-color: rgba(100, 100, 100, 0.3) transparent;
 }
 
-/* Dark mode scrollbar */
 .dark .widget-scrollbar::-webkit-scrollbar-thumb {
 	background-color: rgba(150, 150, 150, 0.25);
 }

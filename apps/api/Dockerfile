@@ -23,7 +23,7 @@ COPY apps/api/ ./apps/api/
 
 # Stage 4: Runner
 FROM base AS runner
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN addgroup -S -g 1000 appgroup && adduser -S -u 1000 -G appgroup appuser
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules

@@ -118,3 +118,10 @@ deploy: helm-deps ## Deploy to cluster (env based on git branch)
 undeploy: ## Uninstall from cluster (env based on git branch)
 	@echo "Removing from $(NAMESPACE) (branch: $(BRANCH), env: $(ENV))"
 	helm uninstall "$(HELM_RELEASE)" -n "$(NAMESPACE)"
+
+.PHONY: clean
+clean: ## Remove build artifacts, Docker images, and local volumes
+	rm -rf apps/api/dist apps/web/dist packages/shared/dist packages/widget/dist
+	$(COMPOSE) down -v --remove-orphans
+	docker rmi "$(API_IMAGE):dev" "$(API_IMAGE):prod" \
+		"$(WEB_IMAGE):dev" "$(WEB_IMAGE):prod" 2>/dev/null || true

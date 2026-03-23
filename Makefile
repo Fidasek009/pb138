@@ -7,6 +7,7 @@ HELM_RELEASE := pagepal
 HELM_CHART := ./helm
 API_IMAGE := ghcr.io/fidasek009/pagepal-api
 WEB_IMAGE := ghcr.io/fidasek009/pagepal-web
+VITE_API_URL ?= http://localhost:3000
 
 # Branch-based environment detection
 BRANCH := $(shell git branch --show-current)
@@ -29,9 +30,7 @@ help: ## Show this help
 .PHONY: setup
 setup: ## Install deps and start database
 	bun install
-	$(COMPOSE) up -d db
-	@echo "Waiting for database..."
-	@sleep 3
+	$(COMPOSE) up -d db --wait
 	@echo "Setup complete. Run 'make dev' to start development."
 
 .PHONY: dev
@@ -59,6 +58,7 @@ db-reset: ## Reset database (destroy volume and recreate)
 	$(COMPOSE) down -v
 	$(COMPOSE) up -d db
 
+# TODO: enable once packages/db implements Drizzle (package.json + schema + migrations)
 .PHONY: db-migrate
 db-migrate: ## Run Drizzle migrations
 	cd packages/db && bun run drizzle-kit migrate
@@ -83,7 +83,7 @@ docker-build-api: ## Build API Docker image
 .PHONY: docker-build-web
 docker-build-web: ## Build Web Docker image
 	docker build -f apps/web/Dockerfile \
-		--build-arg VITE_API_URL="http://localhost:3000" \
+		--build-arg VITE_API_URL="$(VITE_API_URL)" \
 		-t "$(WEB_IMAGE):$(ENV)" .
 
 .PHONY: docker-build

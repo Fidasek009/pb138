@@ -23,7 +23,7 @@ web:
 ingress:
   enabled: true
   className: "nginx"
-  host: "pagepal.dyn.cloud.e-infra.cz"
+  host: "dev.pagepal.dyn.cloud.e-infra.cz"
   tls: true
   tlsSecretName: "pagepal-dev-tls"
 

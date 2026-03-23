@@ -19,6 +19,6 @@ app.get("/health", (c) => {
 });
 
 export default {
-	port: 3000,
+	port: Number.parseInt(process.env.API_PORT ?? "3000", 10),
 	fetch: app.fetch,
 };

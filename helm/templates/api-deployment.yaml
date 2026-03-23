@@ -27,7 +27,7 @@ spec:
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "pagepal.fullname" . }}-db-secret
+                  name: {{ include "pagepal.dbSecretName" . }}
                   key: password
             - name: DATABASE_URL
               value: {{ include "pagepal.databaseUrl" . | quote }}

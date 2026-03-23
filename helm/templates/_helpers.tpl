@@ -57,6 +57,17 @@ app.kubernetes.io/component: web
 {{- end }}
 
 {{/*
+DB secret name — uses existingSecret when provided, otherwise the generated one.
+*/}}
+{{- define "pagepal.dbSecretName" -}}
+{{- if .Values.postgresql.auth.existingSecret }}
+{{- .Values.postgresql.auth.existingSecret }}
+{{- else }}
+{{- include "pagepal.fullname" . }}-db-secret
+{{- end }}
+{{- end }}
+
+{{/*
 Database URL constructed from postgresql subchart values.
 */}}
 {{- define "pagepal.databaseUrl" -}}

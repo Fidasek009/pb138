@@ -8,7 +8,9 @@
 	],
 	"scripts": {
 		"prepare": "husky",
-		"dev": "turbo dev",
+		"db:start": "docker compose up -d db --wait",
+		"db:logs": "docker compose logs --follow db",
+		"dev": "turbo run dev db:logs",
 		"dev:web": "turbo dev --filter=web",
 		"dev:api": "turbo dev --filter=api",
 		"build": "turbo build",

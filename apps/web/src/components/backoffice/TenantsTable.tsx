@@ -58,7 +58,13 @@ export function TenantsTable({ tenants }: TenantsTableProps) {
 									{tenant.tokenUsage}
 								</td>
 								<td className="space-x-2 px-6 py-4 text-right">
-									<Button variant="outline" size="sm">
+									<Button
+										variant="outline"
+										size="sm"
+										disabled
+										title="Not implemented"
+										aria-disabled="true"
+									>
 										Impersonate
 									</Button>
 									{tenant.status === "active" ? (
@@ -66,6 +72,9 @@ export function TenantsTable({ tenants }: TenantsTableProps) {
 											variant="outline"
 											size="sm"
 											className="text-red-600 hover:text-red-700 dark:text-red-500"
+											disabled
+											title="Not implemented"
+											aria-disabled="true"
 										>
 											Suspend
 										</Button>
@@ -74,6 +83,9 @@ export function TenantsTable({ tenants }: TenantsTableProps) {
 											variant="outline"
 											size="sm"
 											className="text-green-600 hover:text-green-700 dark:text-green-500"
+											disabled
+											title="Not implemented"
+											aria-disabled="true"
 										>
 											Re-enable
 										</Button>

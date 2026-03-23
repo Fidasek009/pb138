@@ -108,6 +108,7 @@
 @layer base {
 	* {
 		outline-color: var(--ring);
+		border-color: var(--border);
 	}
 	html {
 		scrollbar-gutter: stable;

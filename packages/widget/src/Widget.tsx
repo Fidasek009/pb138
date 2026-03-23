@@ -34,16 +34,26 @@ export function Widget(props: WidgetProps) {
 	]);
 	const [isTyping, setIsTyping] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const { theme, isDark } = useWidgetTheme();
 
-	// Auto-scroll to bottom
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally scroll on messages change
+	// Cleanup timeout on unmount
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+			}
+		};
+	}, []);
+
+	// Auto-scroll to bottom when messages change or when reopening
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Intentionally scroll on messages and open state changes
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+	}, [messages, isOpen]);
 
 	const handleSend = useCallback(() => {
-		if (!inputValue.trim()) return;
+		if (!inputValue.trim() || isTyping) return;
 
 		const userMsg: Message = {
 			id: Date.now().toString(),
@@ -55,7 +65,7 @@ export function Widget(props: WidgetProps) {
 		setIsTyping(true);
 
 		// Simulate bot response
-		setTimeout(() => {
+		timeoutRef.current = setTimeout(() => {
 			const botMsg: Message = {
 				id: (Date.now() + 1).toString(),
 				role: "bot",
@@ -63,8 +73,9 @@ export function Widget(props: WidgetProps) {
 			};
 			setMessages((prev) => [...prev, botMsg]);
 			setIsTyping(false);
+			timeoutRef.current = null;
 		}, 1500);
-	}, [inputValue]);
+	}, [inputValue, isTyping]);
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter" && !e.shiftKey) {
@@ -79,6 +90,12 @@ export function Widget(props: WidgetProps) {
 	};
 
 	const clearMessages = () => {
+		// Cancel any pending bot response
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current);
+			timeoutRef.current = null;
+		}
+		setIsTyping(false);
 		setMessages([
 			{
 				id: "welcome",
@@ -95,7 +112,8 @@ export function Widget(props: WidgetProps) {
 	return (
 		<div
 			className={[
-				"fixed right-6 bottom-6 z-50 flex flex-col items-end",
+				"fixed z-50 flex flex-col items-end",
+				isRightPosition ? "right-6 bottom-6" : "bottom-6 left-6",
 				theme,
 				className,
 			]
@@ -108,7 +126,12 @@ export function Widget(props: WidgetProps) {
 		>
 			{isOpen && (
 				<div
-					className={`mb-3 flex ${isExpanded ? "h-[80vh]" : "h-[500px]"} w-[350px] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 transition-all duration-300 ${chatContainerClasses}`}
+					id="chat-panel"
+					className={`mb-3 flex max-h-[80vh] w-[90vw] flex-col overflow-hidden rounded-2xl shadow-2xl ring-1 transition-all duration-300 sm:w-[400px] md:w-[450px] lg:w-[500px] ${chatContainerClasses}`}
+					style={{
+						height: isExpanded ? "80vh" : "500px",
+						maxWidth: "min(600px, calc(100vw - 3rem))",
+					}}
 				>
 					<ChatHeader
 						isDark={isDark}
@@ -142,6 +165,8 @@ export function Widget(props: WidgetProps) {
 				className={`flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-xl transition-transform hover:scale-105 active:scale-95 ${
 					isOpen ? "" : "animate-pulse"
 				}`}
+				aria-expanded={isOpen}
+				aria-controls={isOpen ? "chat-panel" : undefined}
 				aria-label={isOpen ? "Close chat" : "Open chat"}
 			>
 				{isOpen ? <XLargeIcon /> : <BotIcon size={28} />}

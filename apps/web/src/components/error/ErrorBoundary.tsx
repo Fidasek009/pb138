@@ -59,10 +59,9 @@ export class ErrorBoundary extends React.Component<Props, State> {
 							<Button
 								onClick={() => {
 									this.setState({ hasError: false });
-									window.location.reload();
 								}}
 							>
-								Reload page
+								Try again
 							</Button>
 						</CardContent>
 					</Card>

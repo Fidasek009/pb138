@@ -35,30 +35,79 @@ export function BotIcon({ size = 28, className = "" }: IconProps) {
 	);
 }
 
-export function ClearIcon({ size = 16 }: IconProps) {
-	return <ClearIconSvg width={size} height={size} aria-hidden="true" />;
+export function ClearIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<ClearIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function ExpandIcon({ size = 16 }: IconProps) {
-	return <ExpandIconSvg width={size} height={size} aria-hidden="true" />;
+export function ExpandIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<ExpandIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function MinimizeIcon({ size = 16 }: IconProps) {
-	return <MinimizeIconSvg width={size} height={size} aria-hidden="true" />;
+export function MinimizeIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<MinimizeIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function SunIcon({ size = 16 }: IconProps) {
-	return <SunIconSvg width={size} height={size} aria-hidden="true" />;
+export function SunIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<SunIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function MoonIcon({ size = 16 }: IconProps) {
-	return <MoonIconSvg width={size} height={size} aria-hidden="true" />;
+export function MoonIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<MoonIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function CloseIcon({ size = 16 }: IconProps) {
-	return <CloseIconSvg width={size} height={size} aria-hidden="true" />;
+export function CloseIcon({ size = 16, className = "" }: IconProps) {
+	return (
+		<CloseIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }
 
-export function XLargeIcon({ size = 24 }: IconProps) {
-	return <XLargeIconSvg width={size} height={size} aria-hidden="true" />;
+export function XLargeIcon({ size = 24, className = "" }: IconProps) {
+	return (
+		<XLargeIconSvg
+			width={size}
+			height={size}
+			className={className}
+			aria-hidden="true"
+		/>
+	);
 }

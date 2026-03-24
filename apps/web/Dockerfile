@@ -1,19 +1,20 @@
-# Stage 1: Install dependencies
-FROM oven/bun:1-alpine AS deps
+# Stage 1: Prune monorepo to only what the web app needs
+FROM oven/bun:1-alpine AS pruner
 WORKDIR /app
-COPY bun.lock package.json ./
-COPY apps/web/package.json ./apps/web/
-COPY packages/shared/package.json ./packages/shared/
-COPY packages/widget/package.json ./packages/widget/
-RUN bun install --frozen-lockfile
+COPY . .
+RUN bun install --ignore-scripts
+RUN ./node_modules/.bin/turbo prune web --docker
 
-# Stage 2: Build
-FROM deps AS builder
+# Stage 2: Install and build
+FROM oven/bun:1-alpine AS builder
+WORKDIR /app
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun.lock ./bun.lock
+RUN bun install --frozen-lockfile --ignore-scripts
+COPY --from=pruner /app/out/full/ .
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
-COPY packages/shared/ ./packages/shared/
 RUN cd packages/shared && bun run build
-COPY apps/web/ ./apps/web/
 RUN cd apps/web && bun run build
 
 # Stage 3: Serve with nginx

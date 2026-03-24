@@ -6,7 +6,11 @@
 		"types": ["@types/bun"],
 		"declaration": true,
 		"outDir": "./dist",
-		"noEmit": false
+		"noEmit": false,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]

@@ -9,6 +9,9 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"isolatedModules": true
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"noImplicitReturns": true,
+		"exactOptionalPropertyTypes": true
 	}
 }

@@ -6,7 +6,15 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": ["**", "!!**/dist", "!!**/*.gen.ts"]
+		"includes": [
+			"**",
+			"!!**/.turbo",
+			"!!**/dist",
+			"!!**/coverage",
+			"!!**/*.gen.ts",
+			"!!**/api/generated",
+			"!!**/components/ui"
+		]
 	},
 	"formatter": {
 		"enabled": true,

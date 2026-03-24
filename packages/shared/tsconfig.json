@@ -2,9 +2,8 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"outDir": "./dist",
-		"declaration": true,
-		"module": "CommonJS",
-		"moduleResolution": "node"
+		"declaration": true
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"]
 }

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag }}"
+          image: "{{ .Values.web.image.repository }}:{{ required "web.image.tag is required — pass --set web.image.tag=<version>" .Values.web.image.tag }}"
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
           ports:
             - name: http

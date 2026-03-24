@@ -172,7 +172,8 @@ deploy: helm-deps _require-tag ## Deploy to cluster (env based on git branch)
 		-n "$(NAMESPACE)" --create-namespace \
 		$(HELM_VALUES) \
 		--set api.image.tag="$(IMAGE_TAG)" \
-		--set web.image.tag="$(IMAGE_TAG)"
+		--set web.image.tag="$(IMAGE_TAG)" \
+		--set migration.image.tag="$(IMAGE_TAG)"
 
 .PHONY: undeploy
 undeploy: ## Uninstall from cluster (env based on git branch)

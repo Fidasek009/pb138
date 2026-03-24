@@ -4,7 +4,7 @@
 api:
   replicaCount: 1
   image:
-    tag: "dev"
+    tag: ""
     pullPolicy: "IfNotPresent"
   resources:
     limits:
@@ -17,7 +17,7 @@ api:
 web:
   replicaCount: 1
   image:
-    tag: "dev"
+    tag: ""
     pullPolicy: "IfNotPresent"
 
 ingress:
@@ -38,4 +38,4 @@ postgresql:
 migration:
   enabled: false
   image:
-    tag: "dev"
+    tag: ""

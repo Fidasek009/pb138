@@ -10,8 +10,14 @@ WEB_IMAGE := ghcr.io/fidasek009/pagepal-web
 VITE_API_URL ?= http://localhost:3000
 
 # Branch-based environment detection
-BRANCH := $(shell git branch --show-current)
+# git branch --show-current returns empty in detached HEAD (e.g. CI checkouts); fall back to "detached"
+BRANCH := $(shell b=$$(git branch --show-current 2>/dev/null); echo $${b:-detached})
 ifeq ($(BRANCH),main)
+  ENV := prod
+  NAMESPACE := pagepal-prod
+  HELM_VALUES :=
+else ifeq ($(BRANCH),detached)
+  # Detached HEAD in CI: treat as prod (release tags are checked out this way)
   ENV := prod
   NAMESPACE := pagepal-prod
   HELM_VALUES :=
@@ -46,8 +52,8 @@ dev-web: ## Start web only
 	bun run dev:web
 
 .PHONY: db-up
-db-up: ## Start PostgreSQL
-	$(COMPOSE) up -d db
+db-up: ## Start PostgreSQL (waits until healthy)
+	$(COMPOSE) up -d db --wait
 
 .PHONY: db-down
 db-down: ## Stop database services
@@ -96,7 +102,7 @@ test: ## Run all tests
 
 .PHONY: lint
 lint: ## Lint all workspaces
-	bun run check
+	bun run lint
 
 # ── Helm ───────────────────────────────────────────
 .PHONY: helm-deps

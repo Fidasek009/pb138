@@ -7,6 +7,9 @@ erDiagram
         string password_hash
         decimal balance_usd
         decimal monthly_usage_limit
+        decimal usage_alert_threshold_usd
+        uuid widget_token
+        string status
         datetime last_active
         datetime created_at
     }

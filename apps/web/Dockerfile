@@ -19,6 +19,7 @@ RUN cd apps/web && bun run build
 
 # Stage 3: Serve with nginx
 FROM nginx:1.28.2-alpine AS runner
+LABEL org.opencontainers.image.source=https://github.com/Fidasek009/pb138
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
 COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
 RUN chown -R nginx:nginx /usr/share/nginx/html \

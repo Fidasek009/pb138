@@ -164,6 +164,8 @@ ns-create: ## Create namespace in Rancher project (idempotent)
 	@out=$$(printf 'apiVersion: v1\nkind: Namespace\nmetadata:\n  name: %s\n  annotations:\n    field.cattle.io/projectId: %s\n' \
 		"$(NAMESPACE)" "$(RANCHER_PROJECT_ID)" | kubectl create -f - 2>&1); \
 	echo "$$out" | grep -qE "created|AlreadyExists" || { echo "$$out"; exit 1; }
+	@echo "Waiting for Rancher RBAC to propagate..."
+	@until kubectl auth can-i list configmaps -n "$(NAMESPACE)" >/dev/null 2>&1; do sleep 2; done
 
 .PHONY: helm-deps
 helm-deps: ## Update Helm chart dependencies

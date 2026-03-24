@@ -26,6 +26,25 @@ make setup   # install deps + start PostgreSQL in Docker
 make dev     # start API, web, and DB log panel via Turborepo TUI
 ```
 
+## Cluster access (kubeconfig)
+
+Download the kubeconfig from the [e-infra.cz Rancher dashboard](https://rancher.cloud.e-infra.cz) — top-right menu → **Download KubeConfig**.
+
+Then point your tools at it for the session:
+
+```bash
+export KUBECONFIG=/path/to/downloaded-kubeconfig.yaml
+kubectl get nodes   # verify access
+```
+
+To make it permanent, merge it into your default kubeconfig:
+
+```bash
+KUBECONFIG=~/.kube/config:/path/to/downloaded-kubeconfig.yaml \
+  kubectl config view --flatten > /tmp/merged.yaml
+mv /tmp/merged.yaml ~/.kube/config
+```
+
 ## Deploying to the cluster
 
 ### First deploy only — pull Helm dependencies

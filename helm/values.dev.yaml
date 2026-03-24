@@ -5,7 +5,7 @@ api:
   replicaCount: 1
   image:
     tag: "dev"
-    pullPolicy: "Always"
+    pullPolicy: "IfNotPresent"
   resources:
     limits:
       cpu: "500m"
@@ -18,7 +18,7 @@ web:
   replicaCount: 1
   image:
     tag: "dev"
-    pullPolicy: "Always"
+    pullPolicy: "IfNotPresent"
 
 ingress:
   enabled: true
@@ -26,6 +26,7 @@ ingress:
   host: "dev.pagepal.dyn.cloud.e-infra.cz"
   tls: true
   tlsSecretName: "pagepal-dev-tls"
+  clusterIssuer: "letsencrypt-prod"
 
 postgresql:
   auth:

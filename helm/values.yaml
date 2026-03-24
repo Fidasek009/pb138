@@ -37,6 +37,7 @@ ingress:
   host: "pagepal.dyn.cloud.e-infra.cz"
   tls: true
   tlsSecretName: "pagepal-tls"
+  clusterIssuer: "letsencrypt-prod"
 
 postgresql:
   auth:

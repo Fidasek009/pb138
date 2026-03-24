@@ -20,6 +20,13 @@ export const clients = pgTable("clients", {
 		precision: 12,
 		scale: 4,
 	}),
+	usageAlertThresholdUsd: numeric("usage_alert_threshold_usd", {
+		precision: 12,
+		scale: 4,
+	}),
+	// Token scoping widget requests to this client (never exposed to the dashboard UI)
+	widgetToken: uuid("widget_token").notNull().unique().defaultRandom(),
+	status: varchar("status", { length: 50 }).notNull().default("active"),
 	lastActive: timestamp("last_active", { withTimezone: true }),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.defaultNow()

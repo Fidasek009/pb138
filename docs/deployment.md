@@ -12,10 +12,10 @@
 
 ## Environments
 
-| Environment | Namespace      | Branch       | Image tag            |
-|-------------|----------------|--------------|----------------------|
-| dev         | `pagepal-dev`  | any non-main | `sha-<short-commit>` |
-| prod        | `pagepal-prod` | `main`       | `MAJOR.MINOR.PATCH`  |
+| Environment | Namespace       | Branch       | Image tag            |
+|-------------|-----------------|--------------|----------------------|
+| dev         | `pagepal-dev`   | any non-main | `sha-<short-commit>` |
+| prod        | `pagepal-prod`  | `main`       | `MAJOR.MINOR.PATCH`  |
 
 The active environment is detected from the current git branch — no flags needed.
 
@@ -60,8 +60,8 @@ Re-run only when `helm/Chart.yaml` dependencies change.
 From any non-main branch:
 
 ```bash
-make docker-push   # build + push ghcr.io/.../pagepal-{api,web}:sha-<commit>
-make deploy        # helm upgrade --install → pagepal-dev
+make push     # build + push ghcr.io/.../pagepal-{api,web}:sha-<commit>
+make deploy   # helm upgrade --install → pagepal-dev
 ```
 
 ### Prod release
@@ -76,8 +76,8 @@ This merges the current branch to `main`, tags `v1.2.3`, and pushes. Then:
 
 ```bash
 git checkout main
-make docker-push   # builds ghcr.io/.../pagepal-{api,web}:1.2.3
-make deploy        # helm upgrade --install → pagepal-prod
+make push     # builds ghcr.io/.../pagepal-{api,web}:1.2.3
+make deploy   # helm upgrade --install → pagepal-prod
 ```
 
-Both `make docker-push` and `make deploy` fail if there is no semver tag on HEAD, preventing accidental prod deploys without a version.
+Both `make push` and `make deploy` fail if there is no semver tag on HEAD, preventing accidental prod deploys without a version.

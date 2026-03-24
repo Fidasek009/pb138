@@ -1,6 +1,11 @@
 # Production defaults — deploy prod with no -f flag.
 # Dev overrides are in values.dev.yaml.
 
+# imagePullSecrets is the list of pull secrets for private registries.
+# Create the secret with: make pull-secret GITHUB_TOKEN=<pat>
+imagePullSecrets:
+  - name: "ghcr-pull-secret"
+
 api:
   replicaCount: 2
   image:

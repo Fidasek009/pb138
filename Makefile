@@ -5,8 +5,9 @@ SHELL := /bin/sh
 COMPOSE := docker compose
 HELM_RELEASE := pagepal
 HELM_CHART := ./helm
-API_IMAGE := ghcr.io/fidasek009/pagepal-api
-WEB_IMAGE := ghcr.io/fidasek009/pagepal-web
+GHCR_USER := fidasek009
+API_IMAGE := ghcr.io/$(GHCR_USER)/pagepal-api
+WEB_IMAGE := ghcr.io/$(GHCR_USER)/pagepal-web
 VITE_API_URL ?= http://localhost:3000
 # Rancher project ID — namespaces must be annotated with this to appear in the right project
 RANCHER_PROJECT_ID := c-m-qvndqhf6:p-8rjpv
@@ -25,7 +26,7 @@ else ifeq ($(BRANCH),detached)
   HELM_VALUES :=
 else
   ENV := dev
-  NAMESPACE := pagepal-dev
+  NAMESPACE := pagepal-dev2
   HELM_VALUES := -f $(HELM_CHART)/values.dev.yaml
 endif
 
@@ -160,12 +161,21 @@ release: ## Merge to main, tag vVERSION, push (VERSION=x.y.z required)
 
 # ── Helm ───────────────────────────────────────────
 .PHONY: ns-create
-ns-create: ## Create namespace in Rancher project (idempotent)
-	@out=$$(printf 'apiVersion: v1\nkind: Namespace\nmetadata:\n  name: %s\n  annotations:\n    field.cattle.io/projectId: %s\n' \
-		"$(NAMESPACE)" "$(RANCHER_PROJECT_ID)" | kubectl create -f - 2>&1); \
-	echo "$$out" | grep -qE "created|AlreadyExists" || { echo "$$out"; exit 1; }
+ns-create: ## Create/update namespace with Rancher project annotation and resource quotas (idempotent)
+	NAMESPACE="$(NAMESPACE)" RANCHER_PROJECT_ID="$(RANCHER_PROJECT_ID)" \
+		envsubst < k8s/namespace-$(ENV).yaml | kubectl apply -f -
 	@echo "Waiting for Rancher RBAC to propagate..."
 	@until kubectl auth can-i list configmaps -n "$(NAMESPACE)" >/dev/null 2>&1; do sleep 2; done
+
+.PHONY: pull-secret
+pull-secret: ## Create GHCR pull secret in cluster namespace (requires GITHUB_TOKEN)
+	@[ -n "$(GITHUB_TOKEN)" ] || { echo "ERROR: GITHUB_TOKEN is required.  Usage: GITHUB_TOKEN=<pat> make pull-secret"; exit 1; }
+	kubectl create secret docker-registry ghcr-pull-secret \
+		--docker-server=ghcr.io \
+		--docker-username="$(GHCR_USER)" \
+		--docker-password="$(GITHUB_TOKEN)" \
+		-n "$(NAMESPACE)" \
+		--dry-run=client -o yaml | kubectl apply -f -
 
 .PHONY: helm-deps
 helm-deps: ## Update Helm chart dependencies

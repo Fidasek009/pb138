@@ -8,6 +8,8 @@ HELM_CHART := ./helm
 API_IMAGE := ghcr.io/fidasek009/pagepal-api
 WEB_IMAGE := ghcr.io/fidasek009/pagepal-web
 VITE_API_URL ?= http://localhost:3000
+# Rancher project ID — namespaces must be annotated with this to appear in the right project
+RANCHER_PROJECT_ID := c-m-qvndqhf6:p-8rjpv
 
 # Branch-based environment detection
 # git branch --show-current returns empty in detached HEAD (e.g. CI checkouts); fall back to "detached"
@@ -103,29 +105,29 @@ _require-tag:
 		exit 1; \
 	}
 
-.PHONY: docker-build-api
-docker-build-api: _require-tag ## Build API Docker image
+.PHONY: build-api
+build-api: _require-tag ## Build API Docker image
 	docker build -f apps/api/Dockerfile -t "$(API_IMAGE):$(IMAGE_TAG)" .
 
-.PHONY: docker-build-web
-docker-build-web: _require-tag ## Build Web Docker image
+.PHONY: build-web
+build-web: _require-tag ## Build Web Docker image
 	docker build -f apps/web/Dockerfile \
 		--build-arg VITE_API_URL="$(VITE_API_URL)" \
 		-t "$(WEB_IMAGE):$(IMAGE_TAG)" .
 
-.PHONY: docker-build
-docker-build: docker-build-api docker-build-web ## Build all Docker images
+.PHONY: build
+build: build-api build-web ## Build all Docker images
 
-.PHONY: docker-push-api
-docker-push-api: docker-build-api ## Build and push API Docker image
+.PHONY: push-api
+push-api: build-api ## Build and push API Docker image
 	docker push "$(API_IMAGE):$(IMAGE_TAG)"
 
-.PHONY: docker-push-web
-docker-push-web: docker-build-web ## Build and push Web Docker image
+.PHONY: push-web
+push-web: build-web ## Build and push Web Docker image
 	docker push "$(WEB_IMAGE):$(IMAGE_TAG)"
 
-.PHONY: docker-push
-docker-push: docker-push-api docker-push-web ## Build and push all Docker images
+.PHONY: push
+push: push-api push-web ## Build and push all Docker images
 
 # ── Test / Lint ────────────────────────────────────
 .PHONY: test
@@ -157,6 +159,12 @@ release: ## Merge to main, tag vVERSION, push (VERSION=x.y.z required)
 	git checkout "$(BRANCH)"
 
 # ── Helm ───────────────────────────────────────────
+.PHONY: ns-create
+ns-create: ## Create namespace in Rancher project (idempotent)
+	@out=$$(printf 'apiVersion: v1\nkind: Namespace\nmetadata:\n  name: %s\n  annotations:\n    field.cattle.io/projectId: %s\n' \
+		"$(NAMESPACE)" "$(RANCHER_PROJECT_ID)" | kubectl create -f - 2>&1); \
+	echo "$$out" | grep -qE "created|AlreadyExists" || { echo "$$out"; exit 1; }
+
 .PHONY: helm-deps
 helm-deps: ## Update Helm chart dependencies
 	helm dependency update "$(HELM_CHART)"
@@ -166,10 +174,10 @@ helm-lint: ## Lint Helm chart
 	helm lint "$(HELM_CHART)"
 
 .PHONY: deploy
-deploy: helm-deps _require-tag ## Deploy to cluster (env based on git branch)
+deploy: ns-create helm-deps _require-tag ## Deploy to cluster (env based on git branch)
 	@echo "Deploying $(IMAGE_TAG) to $(NAMESPACE) (branch: $(BRANCH), env: $(ENV))"
 	helm upgrade --install "$(HELM_RELEASE)" "$(HELM_CHART)" \
-		-n "$(NAMESPACE)" --create-namespace \
+		-n "$(NAMESPACE)" \
 		$(HELM_VALUES) \
 		--set api.image.tag="$(IMAGE_TAG)" \
 		--set web.image.tag="$(IMAGE_TAG)" \

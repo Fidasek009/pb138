@@ -6,7 +6,6 @@ WORKDIR /app
 FROM base AS deps
 COPY bun.lock package.json ./
 COPY apps/api/package.json ./apps/api/
-COPY packages/db/package.json ./packages/db/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/widget/package.json ./packages/widget/
 RUN bun install --frozen-lockfile --production
@@ -15,7 +14,6 @@ RUN bun install --frozen-lockfile --production
 FROM base AS builder
 COPY bun.lock package.json ./
 COPY apps/api/package.json ./apps/api/
-COPY packages/db/package.json ./packages/db/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/widget/package.json ./packages/widget/
 RUN bun install --frozen-lockfile

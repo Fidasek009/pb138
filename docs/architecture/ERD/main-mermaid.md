@@ -87,10 +87,11 @@ erDiagram
         datetime created_at
     }
 
-    CLIENT ||--|| WIDGET_CONFIG : has
+    %% TODO: WIDGET_CONFIG entity is not yet defined — columns TBD
     CLIENT ||--|| BOT_CONFIG : has
     CLIENT ||--o{ BLACKLIST_WORD : defines
-    CLIENT ||--o{ MCP_SERVER : configures
+    CLIENT ||--o{ CUSTOM_MCP_SERVER : configures
+    CLIENT }o--o{ PRE_MADE_MCP_SERVER : uses
     CLIENT ||--o{ END_USER_SESSION : receives
     CLIENT ||--o{ USAGE_RECORD : generates
 

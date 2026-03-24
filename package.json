@@ -13,7 +13,7 @@
 		"dev:api": "turbo dev --filter=api",
 		"build": "turbo build",
 		"lint": "turbo lint",
-		"check": "turbo check",
+		"check": "biome check .",
 		"type-check": "turbo type-check",
 		"test": "turbo test",
 		"format": "biome format --write .",

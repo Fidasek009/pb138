@@ -3,6 +3,7 @@ FROM oven/bun:1-alpine AS deps
 WORKDIR /app
 COPY bun.lock package.json ./
 COPY apps/web/package.json ./apps/web/
+COPY packages/db/package.json ./packages/db/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/widget/package.json ./packages/widget/
 RUN bun install --frozen-lockfile

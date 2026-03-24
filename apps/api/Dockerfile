@@ -6,6 +6,7 @@ WORKDIR /app
 FROM base AS deps
 COPY bun.lock package.json ./
 COPY apps/api/package.json ./apps/api/
+COPY packages/db/package.json ./packages/db/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/widget/package.json ./packages/widget/
 RUN bun install --frozen-lockfile --production
@@ -14,6 +15,7 @@ RUN bun install --frozen-lockfile --production
 FROM base AS builder
 COPY bun.lock package.json ./
 COPY apps/api/package.json ./apps/api/
+COPY packages/db/package.json ./packages/db/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/widget/package.json ./packages/widget/
 RUN bun install --frozen-lockfile
@@ -23,7 +25,6 @@ COPY apps/api/ ./apps/api/
 
 # Stage 4: Runner
 FROM base AS runner
-RUN addgroup -S -g 1000 appgroup && adduser -S -u 1000 -G appgroup appuser
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
@@ -32,8 +33,9 @@ COPY --from=builder /app/packages/shared/package.json ./packages/shared/
 COPY --from=builder /app/apps/api/src ./apps/api/src
 COPY --from=builder /app/apps/api/package.json ./apps/api/
 COPY --from=builder /app/package.json ./
-RUN chown -R appuser:appgroup /app
-USER appuser
+# oven/bun:1-alpine ships a 'bun' user at UID/GID 1000 — reuse it instead of creating a conflicting one
+RUN chown -R bun:bun /app
+USER bun
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://localhost:3000/health || exit 1

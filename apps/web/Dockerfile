@@ -15,10 +15,12 @@ COPY --from=pruner /app/out/full/ .
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 RUN cd packages/shared && bun run build
+RUN cd packages/widget && bun run build
+RUN cd apps/web && bun run generate-routes
 RUN cd apps/web && bun run build
 
 # Stage 3: Serve with nginx
-FROM nginx:1.28.2-alpine AS runner
+FROM nginx:1.29-alpine-slim AS runner
 LABEL org.opencontainers.image.source=https://github.com/Fidasek009/pb138
 COPY --from=builder /app/apps/web/dist /usr/share/nginx/html
 COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf

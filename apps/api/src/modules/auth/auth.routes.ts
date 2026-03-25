@@ -13,9 +13,11 @@ export function createAuthRouter(service: AuthService): Hono {
 			return c.json({ success: true, message: "Verification email sent" }, 201);
 		} catch (err) {
 			if (err instanceof Error && err.message === "EMAIL_TAKEN") {
+				// Return same response as success to prevent account enumeration
+				console.error("Registration attempted with taken email");
 				return c.json(
-					{ success: false, message: "Email already registered" },
-					409,
+					{ success: true, message: "Verification email sent" },
+					201,
 				);
 			}
 			throw err;

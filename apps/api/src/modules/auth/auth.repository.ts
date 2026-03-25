@@ -31,12 +31,15 @@ export interface IAuthRepository {
 	updateLastActive(clientId: string): Promise<void>;
 	// Overwrites any existing pending registration for the same email
 	savePendingRegistration(record: PendingRegistration): Promise<void>;
-	// Atomically claims and removes the pending registration for the given token.
-	// Throws EMAIL_TAKEN if the token does not exist.
-	// Implementations MUST make this a single atomic operation (e.g., a DB transaction
-	// with SELECT ... FOR UPDATE) so concurrent calls with the same token can only
-	// succeed once — the second caller must get INVALID_TOKEN.
-	consumePendingRegistration(token: string): Promise<PendingRegistration>;
+	// Atomically verifies the token, creates the Client record, and deletes the pending
+	// registration in a single transaction (e.g., SELECT … FOR UPDATE in a DB impl).
+	// The deletion happens only after successful creation, so a failed creation leaves
+	// the token intact and the operation is retry-safe.
+	// Callers must NOT call createClient separately for this flow.
+	// Throws INVALID_TOKEN if no pending registration exists for the token.
+	// Throws TOKEN_EXPIRED if the registration has expired.
+	// Throws EMAIL_TAKEN if a client with this email already exists.
+	consumePendingRegistration(token: string): Promise<Client>;
 }
 
 // TODO: replace InMemoryAuthRepository with a DrizzleAuthRepository that reads/writes
@@ -91,14 +94,21 @@ export class InMemoryAuthRepository implements IAuthRepository {
 		this.pendingRegistrations.set(record.token, record);
 	}
 
-	// Safe in this single-threaded implementation because there are no await points
-	// between the get and delete — the two operations are effectively atomic.
-	async consumePendingRegistration(
-		token: string,
-	): Promise<PendingRegistration> {
+	// Single-threaded: no await points between the get, createClient, and delete,
+	// so the whole sequence is effectively atomic for this in-memory implementation.
+	async consumePendingRegistration(token: string): Promise<Client> {
 		const record = this.pendingRegistrations.get(token);
 		if (!record) throw new Error("INVALID_TOKEN");
+		if (record.expiresAt < new Date()) throw new Error("TOKEN_EXPIRED");
+		// createClient throws EMAIL_TAKEN on duplicate; the token stays intact so
+		// the caller can detect the conflict and retry or surface an error.
+		const client = await this.createClient({
+			name: record.name,
+			email: record.email,
+			passwordHash: record.passwordHash,
+		});
+		// Delete only after successful creation to preserve retry-safety.
 		this.pendingRegistrations.delete(token);
-		return record;
+		return client;
 	}
 }

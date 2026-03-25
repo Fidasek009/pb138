@@ -19,7 +19,7 @@
 	"formatter": {
 		"enabled": true,
 		"indentStyle": "tab",
-		"lineWidth": 100,
+		"lineWidth": 80,
 		"lineEnding": "lf"
 	},
 	"linter": {
@@ -59,7 +59,14 @@
 	},
 	"overrides": [
 		{
-			"includes": ["*.test.ts", "*.spec.ts", "*.test.tsx", "*.spec.tsx", "*.test.js", "*.spec.js"],
+			"includes": [
+				"*.test.ts",
+				"*.spec.ts",
+				"*.test.tsx",
+				"*.spec.tsx",
+				"*.test.js",
+				"*.spec.js"
+			],
 			"linter": {
 				"rules": {
 					"suspicious": {

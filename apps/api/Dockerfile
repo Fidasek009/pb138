@@ -19,6 +19,7 @@ COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/bun.lock ./bun.lock
 RUN bun install --frozen-lockfile --ignore-scripts
 COPY --from=pruner /app/out/full/ .
+COPY --from=pruner /app/tsconfig.json ./
 RUN cd packages/shared && bun run build
 
 # Stage 4: Runner

@@ -12,6 +12,7 @@ COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/bun.lock ./bun.lock
 RUN bun install --frozen-lockfile --ignore-scripts
 COPY --from=pruner /app/out/full/ .
+COPY --from=pruner /app/tsconfig.json ./
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 RUN cd packages/shared && bun run build

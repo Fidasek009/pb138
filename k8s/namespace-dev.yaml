@@ -6,5 +6,5 @@ metadata:
     cattle.io/creator: norman
   annotations:
     field.cattle.io/projectId: ${RANCHER_PROJECT_ID}
-    field.cattle.io/resourceQuota: '{"limit":{"requestsCpu":"500m","requestsMemory":"512Mi","limitsCpu":"2000m","limitsMemory":"2048Mi"}}'
+    field.cattle.io/resourceQuota: '{"limit":{"requestsCpu":"750m","requestsMemory":"1024Mi","limitsCpu":"2000m","limitsMemory":"2048Mi"}}'
     field.cattle.io/containerDefaultResourceLimit: '{"requestsCpu":"50m","requestsMemory":"64Mi","limitsCpu":"200m","limitsMemory":"256Mi"}'

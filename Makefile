@@ -155,12 +155,14 @@ release: ## Merge to main, tag vVERSION, push (VERSION=x.y.z required)
 		echo "ERROR: detached HEAD — checkout a branch first."; exit 1; }
 	@[ -z "$$(git status --porcelain)" ] || { \
 		echo "ERROR: working tree is dirty — commit or stash changes first."; exit 1; }
-	git checkout main
-	git pull --ff-only origin main
-	git merge --no-ff "$(BRANCH)" -m "chore: release v$(VERSION)"
-	git tag "v$(VERSION)"
+	@saved_branch="$(BRANCH)"; \
+	trap 'git checkout "$$saved_branch"' EXIT; \
+	set -e; \
+	git checkout main; \
+	git pull --ff-only origin main; \
+	git merge --no-ff "$$saved_branch" -m "chore: release v$(VERSION)"; \
+	git tag "v$(VERSION)"; \
 	git push origin main --tags
-	git checkout "$(BRANCH)"
 
 # ── Helm ───────────────────────────────────────────
 .PHONY: ns-create

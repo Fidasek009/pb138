@@ -44,6 +44,12 @@ export function createAuthRouter(service: AuthService): Hono {
 							400,
 						);
 					}
+					if (err.message === "EMAIL_ALREADY_VERIFIED") {
+						return c.json(
+							{ success: false, message: "Email already verified" },
+							409,
+						);
+					}
 				}
 				throw err;
 			}

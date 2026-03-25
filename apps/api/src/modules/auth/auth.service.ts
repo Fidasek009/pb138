@@ -35,17 +35,25 @@ export class AuthService {
 	}
 
 	async verifyEmail(token: string): Promise<void> {
-		const pending = await this.repo.findPendingRegistration(token);
-		if (!pending) throw new Error("INVALID_TOKEN");
+		// consumePendingRegistration atomically claims the token so only one
+		// concurrent caller can proceed; the second gets INVALID_TOKEN.
+		const pending = await this.repo.consumePendingRegistration(token);
 		if (pending.expiresAt < new Date()) throw new Error("TOKEN_EXPIRED");
 
-		await this.repo.createClient({
-			name: pending.name,
-			email: pending.email,
-			passwordHash: pending.passwordHash,
-		});
-
-		await this.repo.deletePendingRegistration(token);
+		try {
+			await this.repo.createClient({
+				name: pending.name,
+				email: pending.email,
+				passwordHash: pending.passwordHash,
+			});
+		} catch (err) {
+			// EMAIL_TAKEN here means a client with this email was already created
+			// (e.g., a concurrent verify succeeded first).
+			if (err instanceof Error && err.message === "EMAIL_TAKEN") {
+				throw new Error("EMAIL_ALREADY_VERIFIED");
+			}
+			throw err;
+		}
 	}
 
 	async login(email: string, password: string): Promise<string> {

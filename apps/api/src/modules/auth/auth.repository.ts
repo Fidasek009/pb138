@@ -23,14 +23,20 @@ export type PendingRegistration = {
 export interface IAuthRepository {
 	findClientByEmail(email: string): Promise<Client | null>;
 	findClientById(id: string): Promise<Client | null>;
+	// TODO: enforce a unique index on clients.email in the DB migration
+	// so the DB itself rejects duplicates and throws EMAIL_TAKEN on conflict.
 	createClient(
 		data: Pick<Client, "name" | "email" | "passwordHash">,
 	): Promise<Client>;
 	updateLastActive(clientId: string): Promise<void>;
 	// Overwrites any existing pending registration for the same email
 	savePendingRegistration(record: PendingRegistration): Promise<void>;
-	findPendingRegistration(token: string): Promise<PendingRegistration | null>;
-	deletePendingRegistration(token: string): Promise<void>;
+	// Atomically claims and removes the pending registration for the given token.
+	// Throws EMAIL_TAKEN if the token does not exist.
+	// Implementations MUST make this a single atomic operation (e.g., a DB transaction
+	// with SELECT ... FOR UPDATE) so concurrent calls with the same token can only
+	// succeed once — the second caller must get INVALID_TOKEN.
+	consumePendingRegistration(token: string): Promise<PendingRegistration>;
 }
 
 // TODO: replace InMemoryAuthRepository with a DrizzleAuthRepository that reads/writes
@@ -53,6 +59,9 @@ export class InMemoryAuthRepository implements IAuthRepository {
 	async createClient(
 		data: Pick<Client, "name" | "email" | "passwordHash">,
 	): Promise<Client> {
+		for (const client of this.clients.values()) {
+			if (client.email === data.email) throw new Error("EMAIL_TAKEN");
+		}
 		const client: Client = {
 			...data,
 			id: crypto.randomUUID(),
@@ -82,13 +91,14 @@ export class InMemoryAuthRepository implements IAuthRepository {
 		this.pendingRegistrations.set(record.token, record);
 	}
 
-	async findPendingRegistration(
+	// Safe in this single-threaded implementation because there are no await points
+	// between the get and delete — the two operations are effectively atomic.
+	async consumePendingRegistration(
 		token: string,
-	): Promise<PendingRegistration | null> {
-		return this.pendingRegistrations.get(token) ?? null;
-	}
-
-	async deletePendingRegistration(token: string): Promise<void> {
+	): Promise<PendingRegistration> {
+		const record = this.pendingRegistrations.get(token);
+		if (!record) throw new Error("INVALID_TOKEN");
 		this.pendingRegistrations.delete(token);
+		return record;
 	}
 }

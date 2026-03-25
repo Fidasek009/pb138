@@ -61,10 +61,10 @@ export class AuthService {
 			throw new Error("INVALID_CREDENTIALS");
 		}
 
-		await this.repo.updateLastActive(client.id);
-
 		const secret = process.env.JWT_SECRET;
 		if (!secret) throw new Error("JWT_SECRET environment variable is not set");
+
+		await this.repo.updateLastActive(client.id);
 
 		return sign(
 			{

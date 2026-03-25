@@ -14,8 +14,8 @@
 
 | Environment | Namespace       | Branch       | Image tag            |
 |-------------|-----------------|--------------|----------------------|
-| dev         | `pagepal-dev`   | any non-main | `sha-<short-commit>` |
-| prod        | `pagepal-prod`  | `main`       | `MAJOR.MINOR.PATCH`  |
+| dev         | `pagepal-dev`   | push to `dev`       | `sha-<short-commit>` |
+| prod        | `pagepal-prod`  | semver tag `v*.*.*` | `MAJOR.MINOR.PATCH`  |
 
 The active environment is detected from the current git branch — no flags needed.
 
@@ -72,12 +72,14 @@ Run from your dev/feature branch when ready to ship:
 make release VERSION=1.2.3
 ```
 
-This merges the current branch to `main`, tags `v1.2.3`, and pushes. Then:
+This merges the current branch to `main`, tags `v1.2.3`, and pushes. The CD pipeline picks up the tag and automatically builds, pushes, and deploys to `pagepal-prod` — no manual steps needed.
+
+To deploy prod manually (e.g. from a local machine without CI):
 
 ```bash
-git checkout main
-make push     # builds ghcr.io/.../pagepal-{api,web}:1.2.3
-make deploy   # helm upgrade --install → pagepal-prod
+git checkout main  # must be on the tagged commit
+make push          # builds ghcr.io/.../pagepal-{api,web}:1.2.3
+make deploy        # helm upgrade --install → pagepal-prod
 ```
 
 Both `make push` and `make deploy` fail if there is no semver tag on HEAD, preventing accidental prod deploys without a version.

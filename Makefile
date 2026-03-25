@@ -167,16 +167,6 @@ ns-create: ## Create/update namespace with Rancher project annotation and resour
 	@echo "Waiting for Rancher RBAC to propagate..."
 	@until kubectl auth can-i list configmaps -n "$(NAMESPACE)" >/dev/null 2>&1; do sleep 2; done
 
-.PHONY: pull-secret
-pull-secret: ## Create GHCR pull secret in cluster namespace (requires GITHUB_TOKEN)
-	@[ -n "$(GITHUB_TOKEN)" ] || { echo "ERROR: GITHUB_TOKEN is required.  Usage: GITHUB_TOKEN=<pat> make pull-secret"; exit 1; }
-	kubectl create secret docker-registry ghcr-pull-secret \
-		--docker-server=ghcr.io \
-		--docker-username="$(GHCR_USER)" \
-		--docker-password="$(GITHUB_TOKEN)" \
-		-n "$(NAMESPACE)" \
-		--dry-run=client -o yaml | kubectl apply -f -
-
 .PHONY: helm-deps
 helm-deps: ## Update Helm chart dependencies
 	helm dependency update "$(HELM_CHART)"

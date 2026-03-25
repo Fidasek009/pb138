@@ -15,10 +15,6 @@ spec:
       labels:
         {{- include "pagepal.web.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
         - name: web
           image: "{{ .Values.web.image.repository }}:{{ required "web.image.tag is required — pass --set web.image.tag=<version>" .Values.web.image.tag }}"

@@ -14,7 +14,8 @@ export class AuthService {
 	) {}
 
 	async register(name: string, email: string, password: string): Promise<void> {
-		const existing = await this.repo.findClientByEmail(email);
+		const canonical = email.trim().toLowerCase();
+		const existing = await this.repo.findClientByEmail(canonical);
 		if (existing) throw new Error("EMAIL_TAKEN");
 
 		const passwordHash = await Bun.password.hash(password);
@@ -25,12 +26,12 @@ export class AuthService {
 		await this.repo.savePendingRegistration({
 			token,
 			name,
-			email,
+			email: canonical,
 			passwordHash,
 			expiresAt: new Date(Date.now() + VERIFICATION_TOKEN_EXPIRY_MS),
 		});
 
-		await this.sendEmail(email, token);
+		await this.sendEmail(canonical, token);
 	}
 
 	async verifyEmail(token: string): Promise<void> {
@@ -48,7 +49,9 @@ export class AuthService {
 	}
 
 	async login(email: string, password: string): Promise<string> {
-		const client = await this.repo.findClientByEmail(email);
+		const client = await this.repo.findClientByEmail(
+			email.trim().toLowerCase(),
+		);
 		// Return same error for missing client and wrong password to avoid user enumeration
 		if (
 			!client ||

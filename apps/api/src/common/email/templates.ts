@@ -23,11 +23,17 @@ const footerStyle = `
   color: #6b7280;
 `;
 
+function getAppUrl(): string {
+	const url = process.env.APP_URL;
+	if (!url) throw new Error("APP_URL environment variable is not set");
+	return url.replace(/\/$/, "");
+}
+
 export function verificationEmailTemplate(token: string): {
 	subject: string;
 	html: string;
 } {
-	const verifyUrl = `${process.env.APP_URL}/verify-email?token=${token}`;
+	const verifyUrl = `${getAppUrl()}/verify-email?token=${encodeURIComponent(token)}`;
 	return {
 		subject: "Verify your email address",
 		html: `
@@ -47,7 +53,7 @@ export function passwordResetEmailTemplate(token: string): {
 	subject: string;
 	html: string;
 } {
-	const resetUrl = `${process.env.APP_URL}/reset-password?token=${token}`;
+	const resetUrl = `${getAppUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 	return {
 		subject: "Reset your password",
 		html: `
@@ -74,7 +80,7 @@ export function quotaAlertEmailTemplate(usagePercent: number): {
         <h2>Quota usage alert</h2>
         <p>You have used <strong>${usagePercent}%</strong> of your monthly quota.</p>
         <p>To avoid service interruption, consider upgrading your plan.</p>
-        <a href="${process.env.APP_URL}/dashboard/settings?tab=billing" style="${buttonStyle}">Manage billing</a>
+        <a href="${getAppUrl()}/dashboard/settings?tab=billing" style="${buttonStyle}">Manage billing</a>
         <p style="${footerStyle}">You are receiving this email because you enabled quota alerts in your account settings.</p>
       </div>
     `,

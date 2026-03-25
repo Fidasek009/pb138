@@ -78,7 +78,7 @@ db-down: ## Stop database services
 .PHONY: db-reset
 db-reset: ## Reset database (destroy volume and recreate)
 	$(COMPOSE) down -v
-	$(COMPOSE) up -d db
+	$(COMPOSE) up -d db --wait
 
 # TODO: enable once packages/db implements Drizzle (package.json + schema + migrations)
 .PHONY: db-migrate

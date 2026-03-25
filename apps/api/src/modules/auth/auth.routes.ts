@@ -75,12 +75,6 @@ export function createAuthRouter(service: AuthService): Hono {
 						401,
 					);
 				}
-				if (err.message === "EMAIL_NOT_VERIFIED") {
-					return c.json(
-						{ success: false, message: "Please verify your email first" },
-						403,
-					);
-				}
 			}
 			throw err;
 		}

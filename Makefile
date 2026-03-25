@@ -94,8 +94,8 @@ db-studio: ## Open Drizzle Studio
 	cd packages/db && bun run drizzle-kit studio
 
 # ── Build ──────────────────────────────────────────
-.PHONY: build
-build: ## Build all workspaces
+.PHONY: build-workspaces
+build-workspaces: ## Build all Bun workspaces
 	bun run build
 
 .PHONY: _require-tag
@@ -116,8 +116,11 @@ build-web: _require-tag ## Build Web Docker image
 		--build-arg VITE_API_URL="$(VITE_API_URL)" \
 		-t "$(WEB_IMAGE):$(IMAGE_TAG)" .
 
+.PHONY: build-images
+build-images: build-api build-web ## Build all Docker images
+
 .PHONY: build
-build: build-api build-web ## Build all Docker images
+build: build-workspaces build-images ## Build Bun workspaces and all Docker images
 
 .PHONY: push-api
 push-api: build-api ## Build and push API Docker image

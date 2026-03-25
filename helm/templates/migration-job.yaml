@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "pagepal.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": pre-upgrade,pre-install
+    "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": before-hook-creation
 spec:
@@ -24,7 +24,7 @@ spec:
           emptyDir: {}
       containers:
         - name: migrate
-          image: "{{ .Values.migration.image.repository }}:{{ .Values.migration.image.tag }}"
+          image: "{{ .Values.migration.image.repository }}:{{ required "migration.image.tag is required — pass --set migration.image.tag=<version>" .Values.migration.image.tag }}"
           command: ["bun", "run", "drizzle-kit", "migrate"]
           volumeMounts:
             - name: tmp

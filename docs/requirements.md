@@ -36,46 +36,48 @@
 | FR-2.1 | Client can register a new account | High | Approved |
 | FR-2.2 | Client can log in and log out of the dashboard | High | Approved |
 | FR-2.3 | Client can use an npm-published React component to place the widget on their website | High | Draft |
+| FR-2.4 | Client can reset their password via a link sent to their registered email address | High | Draft |
+| FR-2.5 | Client can permanently delete their account and all associated data | Medium | Draft |
 
 #### FR-2b: API configuration
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.4 | Client can use platform's default API endpoint | High | Approved |
-| FR-2.5 | Client can configure a custom API endpoint and API key | Medium | Approved |
+| FR-2.6 | Client can use platform's default API endpoint | High | Approved |
+| FR-2.7 | Client can configure a custom API endpoint and API key | Medium | Approved |
 
 #### FR-2c: Usage and billing
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.6 | Client can add funds to their account | Medium | Approved |
-| FR-2.7 | Client can set a monthly limit (in USD) for API usage | Low | Approved |
-| FR-2.8 | Client can configure email notifications when a usage threshold is reached | Low | Approved |
+| FR-2.8 | Client can add funds to their account | Medium | Approved |
+| FR-2.9 | Client can set a monthly limit (in USD) for API usage | Low | Approved |
+| FR-2.10 | Client can configure email notifications when a usage threshold is reached | Low | Approved |
 
 #### FR-2d: Bot configuration
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.9 | Client can set a system prompt / context that scopes the bot's knowledge to their domain | High | Approved |
-| FR-2.10 | Client can assign a default role to the bot (e.g. "customer support agent for Acme Shop") | High | Approved |
-| FR-2.11 | Client can customise the bot's tone and communication style (e.g. formal / informal address) | Medium | Approved |
-| FR-2.12 | Client can maintain a word blacklist; the bot must not use or engage with blacklisted terms | Medium | Approved |
-| FR-2.13 | Client can toggle whether the bot is allowed to search the internet for answers | Medium | Approved |
+| FR-2.11 | Client can set a system prompt / context that scopes the bot's knowledge to their domain | High | Approved |
+| FR-2.12 | Client can assign a default role to the bot (e.g. "customer support agent for Acme Shop") | High | Approved |
+| FR-2.13 | Client can customise the bot's tone and communication style (e.g. formal / informal address) | Medium | Approved |
+| FR-2.14 | Client can maintain a word blacklist; the bot must not use or engage with blacklisted terms | Medium | Approved |
+| FR-2.15 | Client can toggle whether the bot is allowed to search the internet for answers | Medium | Approved |
 
 #### FR-2e: Knowledge & integrations (MCP)
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.14 | Client can select one of the platform's pre-built MCP connectors (e.g. read-only product database view) to give the bot access to structured data | High | Approved |
-| FR-2.15 | Client can register a custom MCP endpoint URL to connect proprietary data sources | Low | Approved |
+| FR-2.16 | Client can select one of the platform's pre-built MCP connectors (e.g. read-only product database view) to give the bot access to structured data | High | Approved |
+| FR-2.17 | Client can register a custom MCP endpoint URL to connect proprietary data sources | Low | Approved |
 
 #### FR-2f: Analytics & appearance
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.16 | Dashboard displays graphs of token consumption over time | Medium | Approved |
-| FR-2.17 | Dashboard displays the total number of end-user questions over time | Medium | Approved |
-| FR-2.18 | Dashboard supports light and dark mode | High | Approved |
+| FR-2.18 | Dashboard displays graphs of token consumption over time | Medium | Approved |
+| FR-2.19 | Dashboard displays the total number of end-user questions over time | Medium | Approved |
+| FR-2.20 | Dashboard supports light and dark mode | High | Approved |
 
 ### FR-3: Back-office
 
@@ -117,7 +119,7 @@
 | NFR-3.2 | All API endpoints must require authentication; widget endpoints are scoped to a per-client public token | | High |
 | NFR-3.3 | Dashboard and back-office must use HTTPS | | High |
 | NFR-3.4 | The system must log all platform admin access actions | Related to FR-3.3 | Medium |
-| NFR-3.5 | The system should constrain custom MCP endpoints | Related to FR-2.16 | High |
+| NFR-3.5 | The system should constrain custom MCP endpoints | Related to FR-2.17 | High |
 
 ### NFR-4: Performance
 

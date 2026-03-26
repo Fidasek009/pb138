@@ -68,7 +68,7 @@
 
 | ID | Requirement | Priority | Status |
 |----|-------------|----------|--------|
-| FR-2.16 | Client can select one of the platform's pre-built MCP connectors (e.g. read-only product database view) to give the bot access to structured data | High | Approved |
+| FR-2.16 | Client can connect their own MCP server to give the bot access to structured data | High | Approved |
 | FR-2.17 | Client can register a custom MCP endpoint URL to connect proprietary data sources | Low | Approved |
 
 #### FR-2f: Analytics & appearance

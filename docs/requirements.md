@@ -130,8 +130,10 @@
 
 | ID | Requirement | Notes | Priority |
 |----|-------------|-------|----------|
-| NFR-5.1 | Widget must be responsive and usable on mobile devices | | High |
-| NFR-5.2 | Widget supports light and dark mode, respecting the client's configuration and/or the end user's system preference | High | Approved |
+| NFR-5.1 | Widget must be fully responsive and usable across all screen sizes, including mobile devices | Layout and interactions must work correctly from ~320 px upward | High |
+| NFR-5.2 | Widget supports light and dark mode, respecting the client's configuration and/or the end user's system preference | | High |
+| NFR-5.3 | Client dashboard must be usable on common desktop and tablet screen sizes | Minimum supported viewport: 768 px wide | Medium |
+| NFR-5.4 | Back-office is a desktop-only tool; responsive design for mobile viewports is not required | Intended for internal use on desktop browsers only | Low |
 
 ---
 
